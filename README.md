@@ -65,7 +65,7 @@ CREATE TABLE bookings (
 
 ## Use it with AI coding agents
 
-The guide is also packaged as an [agent skill](skills/sql-style-guide/SKILL.md) that writes, reviews and reformats SQL following these rules. Install it with the [`skills`](https://github.com/vercel-labs/skills) CLI:
+The guide is also packaged as an [agent skill](guide/SKILL.md) that writes, reviews and reformats SQL following these rules. Install it with the [`skills`](https://github.com/vercel-labs/skills) CLI:
 
 ```bash
 # Current project only

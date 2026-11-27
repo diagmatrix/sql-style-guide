@@ -5,7 +5,7 @@ description: Write, review and reformat SQL following diagmatrix's SQL style gui
 
 # SQL style guide
 
-This skill applies a specific SQL style guide. The full guide is bundled in `references/`, one file per topic, each rule with an explanation and Bad/Good examples. The checklist below condenses every rule so you can usually work from it alone; open the reference file when a rule's exact scope or an edge case matters.
+This skill applies a specific SQL style guide. The full guide lives next to this file, one file per topic (index in `README.md`), each rule with an explanation and Bad/Good examples. The checklist below condenses every rule so you can usually work from it alone; open the topic file when a rule's exact scope or an edge case matters. Ignore the *Source breakdown* section under each rule: it records which external guides support the rule and doesn't change how the rule is applied.
 
 The guide describes itself as meant "to inform, not dictate": when following a rule would clearly make the SQL worse (efficiency, business constraints, a dialect that doesn't support the construct), deviate and say why. Consistency within a project matters more than any single rule.
 
@@ -34,7 +34,7 @@ When reformatting a file, keep anything that isn't SQL (surrounding code, migrat
 
 ## Rule checklist
 
-### Formatting (`references/formatting.md`)
+### Formatting (`formatting.md`)
 - Left-align all clause keywords at the same margin. No "river" (right-aligned) keywords.
 - Each major clause (`SELECT`, `FROM`, `WHERE`, `GROUP BY`, `HAVING`, `ORDER BY`, ...) starts its own line.
 - `SELECT`, `WHERE` and `HAVING`: every argument on its own line below the keyword, indented one level, **even a single one** (`SELECT` / `    *`).
@@ -53,7 +53,7 @@ When reformatting a file, keep anything that isn't SQL (surrounding code, migrat
 - Trailing commas, never leading commas.
 - Lines under 120 characters. To break a long expression, wrap it in parentheses, break after `(`, indent, start each continuation line with its operator, close `)` on its own line. Break inside a function's own parentheses instead of adding new ones. Still unreadable → move it into a CTE.
 
-### Keywords (`references/keywords.md`)
+### Keywords (`keywords.md`)
 - Reserved words in UPPERCASE (`SELECT`, `AS`, `IS`, `CASE`, ...).
 - Full keyword forms instead of abbreviations (`INNER JOIN`, not `JOIN`).
 - Prefer ANSI functions over vendor-specific ones when an ANSI equivalent exists (`extract(YEAR FROM x)` over `date_part('year', x)`).
@@ -61,7 +61,7 @@ When reformatting a file, keep anything that isn't SQL (surrounding code, migrat
 - Built-in data types in UPPERCASE (`INTEGER`, `VARCHAR(255)`, `TIMESTAMP`). User-defined types follow naming rules (lowercase snake_case).
 - Boolean literals are written `true` / `false` (lowercase), as in `IS true`.
 
-### Naming (`references/naming.md`)
+### Naming (`naming.md`)
 - snake_case; only lowercase letters, digits and underscores; start with a letter; no trailing or double underscores; never quoted identifiers.
 - Descriptive, consistent across tables, unambiguous. No type/role prefixes (`tbl_`, `sp_`, `vw_`). Exception: constraint names may carry a type prefix (`chk_`, `fk_`, ...).
 - Avoid abbreviations unless the whole team understands them.
@@ -72,47 +72,47 @@ When reformatting a file, keep anything that isn't SQL (surrounding code, migrat
 - Standard affixes: `_id`, `_status`, `_total`/`total_`, `_name`, `_size`, `_date` (date), `_at` (timestamp), `_addr`/`_address`, `is_`/`has_` (booleans), unit suffixes (`_eur`, `_ms`), `_month`/`_day`.
 - Generic columns (`id`, `name`, `type`) selected from a table other than the one the result describes get a `table_column` alias (`schools.name AS school_name`). Columns of the table the result is about keep their name (`customers.id` in a query returning customers).
 
-### Aliasing (`references/aliasing.md`)
+### Aliasing (`aliasing.md`)
 - Always write `AS`, for columns and tables.
 - Every aggregate or computed column gets an alias (`count(*) AS total_orders`).
 - Prefer full table names. Alias only long or ambiguous names (or self-joins), with a meaningful word, never initials or `t1`/`x` (`school_district_areas AS districts`).
 - Column aliases follow column naming rules and say what the value is (`average_score`, not `scores_1`).
 - In queries with more than one table, qualify every column reference. In single-table queries, don't.
 
-### Comments (`references/comments.md`)
+### Comments (`comments.md`)
 - `/* */` for every written comment, one line or several; multi-line comments use ` * ` line prefixes.
 - `--` only for commented-out code, one per line. Prefer deleting dead code over keeping it.
 - Comment non-obvious intent and business rules, not what the code plainly says. Explain CTEs whose logic is surprising.
 
-### Data types (`references/data-types.md`)
+### Data types (`data-types.md`)
 - `NUMERIC` / `DECIMAL` for money and exact values; `REAL` / `FLOAT` only for genuine floating-point maths.
 - `BOOLEAN` for flags, with `true`/`false`, never `1`/`0`.
 - Defaults match the column type (`DEFAULT false` on a `BOOLEAN`, `DEFAULT 0` on a `NUMERIC`).
 - ISO 8601 date/time values, written with typed literals: `DATE '2024-09-01'`, `TIMESTAMP '2025-07-31T23:59:59'`.
 
-### Constraints and keys (`references/constraints-keys.md`)
+### Constraints and keys (`constraints-keys.md`)
 - Every table has at least one key.
 - Name constraints explicitly (`CONSTRAINT chk_products_price_min CHECK (price > 0)`). `PRIMARY KEY`, `FOREIGN KEY` and `UNIQUE` may use generated names.
 - Table-level constraints go after the columns, separated by a blank line; `PRIMARY KEY` is the first of them.
 - One rule per `CHECK`; guard numeric ranges (at least `> 0` where a value must be positive).
 - Validate text formats with `LIKE` / `SIMILAR TO`.
 
-### Joins (`references/joins.md`)
+### Joins (`joins.md`)
 - Always `ON`, never `USING`.
 - In the condition, the table introduced first goes first (`ON customers.id = orders.customer_id`).
 - For `INNER JOIN`, row filters belong in `WHERE`; `ON` holds only the relationship. (Not for `LEFT JOIN`: moving them changes the result.)
 
-### Views (`references/views.md`)
+### Views (`views.md`)
 - List the columns explicitly; never `SELECT *` in a view.
 - Only create a view for a clear, recurring purpose, not as a mirror of a table.
 
-### Subqueries and CTEs (`references/subqueries-ctes.md`)
+### Subqueries and CTEs (`subqueries-ctes.md`)
 - Prefer CTEs over nested subqueries.
 - Avoid correlated subqueries; use a CTE plus `JOIN`.
 - One logical step per CTE.
 - CTE and subquery names are descriptive noun phrases (`active_customers`, not `tmp`, `d`, `sq`), with no `cte_` prefix or `_cte` suffix.
 
-### Queries (`references/queries.md`)
+### Queries (`queries.md`)
 - Use `BETWEEN` for ranges and `IN (...)` for value sets instead of chains of `AND` / `OR`.
 - `CASE`: use the simple form (`CASE status WHEN ...`) when comparing one expression; multi-line layout with each `WHEN ... THEN ...` indented under `CASE`, `ELSE` at the `WHEN` level, `END` aligned with `CASE`. A single short `WHEN` may stay on one line. Inside a function call, `CASE` and `END` go on their own lines inside the parentheses.
 - `UNION ALL` unless removing duplicates is actually required.
