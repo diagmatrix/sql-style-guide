@@ -2,7 +2,9 @@
 
 ## STR-01 Prefer CTEs over nested subqueries
 
-When a query requires intermediate results, use a CTE (`WITH`) rather than a nested subquery. CTEs give each step a name, making the query easier to read, test, and debug.
+When a query requires intermediate results, use a CTE (`WITH`) rather than a
+nested subquery. CTEs give each step a name, making the query easier to read,
+test, and debug.
 
 ### Example
 
@@ -58,7 +60,9 @@ WHERE
 
 ## STR-02 Avoid correlated subqueries
 
-A correlated subquery references a column from the outer query, causing it to execute once per row. This leads to poor performance and is almost always replaceable with a `JOIN` or a CTE.
+A correlated subquery references a column from the outer query, causing it to
+execute once per row. This leads to poor performance and is almost always
+replaceable with a `JOIN` or a CTE.
 
 ### Example
 
@@ -100,11 +104,14 @@ INNER JOIN track_counts
 
 - **For (2)**: Celko, PG.ai.
 - **Against (0)**
-- **Not mentioned (7)**: Holywell, PostgreSQL, Mozilla, Brooklyn, GitLab, Mazur, Supabase.
+- **Not mentioned (7)**: Holywell, PostgreSQL, Mozilla, Brooklyn, GitLab, Mazur,
+  Supabase.
 
 ## STR-03 Each CTE should do one logical unit of work
 
-A CTE should encapsulate a single, well-defined step in the query's logic. Avoid cramming multiple transformations into one CTE. A query made of several simple CTEs is easier to understand and debug than one made of fewer complex ones.
+A CTE should encapsulate a single, well-defined step in the query's logic. Avoid
+cramming multiple transformations into one CTE. A query made of several simple
+CTEs is easier to understand and debug than one made of fewer complex ones.
 
 ### Example
 
@@ -178,7 +185,10 @@ FROM student_scores
 
 ## STR-04 Use `ON` for all join conditions; avoid `USING`
 
-Always express join conditions with `ON`, even when the joining columns share the same name. Avoid `USING`, as it silently merges the columns into one in the result set, which can cause unexpected behaviour when adding aliases or when the query is refactored.
+Always express join conditions with `ON`, even when the joining columns share
+the same name. Avoid `USING`, as it silently merges the columns into one in the
+result set, which can cause unexpected behaviour when adding aliases or when the
+query is refactored.
 
 ### Example
 
@@ -211,7 +221,10 @@ INNER JOIN orders
 
 ## STR-05 Put the first-referenced table immediately after `ON`
 
-In a join condition, write the table that was introduced first (the left-hand table) immediately after the `ON` keyword. This makes fan-out risk visible at a glance: if the left table's key is not on the left side of the condition, a row duplication bug may be hiding.
+In a join condition, write the table that was introduced first (the left-hand
+table) immediately after the `ON` keyword. This makes fan-out risk visible at a
+glance: if the left table's key is not on the left side of the condition, a row
+duplication bug may be hiding.
 
 ### Example
 
@@ -241,13 +254,18 @@ INNER JOIN appointments
 
 - **For (2)**: Brooklyn, Mazur.
 - **Against (0)**
-- **Not mentioned (7)**: Holywell, Celko, PostgreSQL, PG.ai, Mozilla, GitLab, Supabase.
+- **Not mentioned (7)**: Holywell, Celko, PostgreSQL, PG.ai, Mozilla, GitLab,
+  Supabase.
 
 ## STR-06 For `INNER JOIN`, keep filter conditions in `WHERE`, not in the `JOIN` clause
 
-The `ON` clause should express only the relationship between tables. Row-level filters belong in `WHERE`. Mixing business logic into `ON` obscures intent, as a reader scanning `ON` expects join conditions, not data filters.
+The `ON` clause should express only the relationship between tables. Row-level
+filters belong in `WHERE`. Mixing business logic into `ON` obscures intent, as a
+reader scanning `ON` expects join conditions, not data filters.
 
-As an important note, this rule applies only to `INNER JOIN`. With `LEFT JOIN`, moving a condition from `ON` to `WHERE` changes the semantics and effectively converts it into an inner join.
+As an important note, this rule applies only to `INNER JOIN`. With `LEFT JOIN`,
+moving a condition from `ON` to `WHERE` changes the semantics and effectively
+converts it into an inner join.
 
 ### Example
 
@@ -282,4 +300,5 @@ WHERE
 
 - **For (1)**: Brooklyn.
 - **Against (0)**
-- **Not mentioned (8)**: Holywell, Celko, PostgreSQL, PG.ai, Mozilla, GitLab, Mazur, Supabase.
+- **Not mentioned (8)**: Holywell, Celko, PostgreSQL, PG.ai, Mozilla, GitLab,
+  Mazur, Supabase.

@@ -2,9 +2,14 @@
 
 ## LAY-01 Left align all keywords, starting on the same character boundary
 
-Align all clause keywords to the same left margin instead of right-aligning them to a common boundary (**river** alignment).
+Align all clause keywords to the same left margin instead of right-aligning them
+to a common boundary (**river** alignment).
 
-Left-aligned keywords are simpler to write and maintain. No padding arithmetic is needed, and adding a longer keyword (switching `JOIN` to `INNER JOIN`, for example) does not force re-alignment of everything else on the page. It also works without editor tooling, which makes it easier to enforce consistently across a team.
+Left-aligned keywords are simpler to write and maintain. No padding arithmetic
+is needed, and adding a longer keyword (switching `JOIN` to `INNER JOIN`, for
+example) does not force re-alignment of everything else on the page. It also
+works without editor tooling, which makes it easier to enforce consistently
+across a team.
 
 ### Example
 
@@ -38,7 +43,10 @@ WHERE
 
 ## LAY-02 Each major clause on its own line
 
-Each major SQL clause (`SELECT`, `FROM`, `WHERE`, `GROUP BY`, `HAVING`, `ORDER BY`, etc.) must start on its own line. This separates the logical structure of the query from its arguments and makes the query easier to scan, modify, and review.
+Each major SQL clause (`SELECT`, `FROM`, `WHERE`, `GROUP BY`, `HAVING`,
+`ORDER BY`, etc.) must start on its own line. This separates the logical
+structure of the query from its arguments and makes the query easier to scan,
+modify, and review.
 
 ### Example
 
@@ -68,9 +76,14 @@ GROUP BY full_name, email
 
 ## LAY-03 Place `SELECT`, `WHERE` and `HAVING` arguments below the keyword
 
-The arguments of `SELECT`, `WHERE` and `HAVING` clauses must each be on their own line below the keyword, indented one level, including the first one. This applies even when the clause has a single argument.
+The arguments of `SELECT`, `WHERE` and `HAVING` clauses must each be on their
+own line below the keyword, indented one level, including the first one. This
+applies even when the clause has a single argument.
 
-All other clauses (`FROM`, `JOIN`, `GROUP BY`, `ORDER BY`, ...) keep their arguments on the same line as the keyword. `JOIN` conditions are the one exception, and follow [their own rule](#lay-05-place-join-conditions-below-the-keyword).
+All other clauses (`FROM`, `JOIN`, `GROUP BY`, `ORDER BY`, ...) keep their
+arguments on the same line as the keyword. `JOIN` conditions are the one
+exception, and follow [their own
+rule](#lay-05-place-join-conditions-below-the-keyword).
 
 ### Example
 
@@ -108,20 +121,24 @@ ORDER BY price, name
 Regarding a single argument also being placed below the root keyword:
 
 - **For (0)**
-- **Against (3)**: Mozilla, PG.ai, Brooklyn (they allow a single argument to share the line with the keyword).
+- **Against (3)**: Mozilla, PG.ai, Brooklyn (they allow a single argument to
+  share the line with the keyword).
 - **Not mentioned (6)**: Holywell, Celko, PostgreSQL, GitLab, Mazur, Supabase.
 
 Regarding multiple arguments each on their own line, including the first:
 
 - **For (4)**: Mozilla, PG.ai, Brooklyn, Mazur.
-- **Against (2)**: Holywell, Celko (the river pattern places the first argument on the same line as the keyword).
+- **Against (2)**: Holywell, Celko (the river pattern places the first argument
+  on the same line as the keyword).
 - **Not mentioned (3)**: PostgreSQL, GitLab, Supabase.
 
 ---
 
 ## LAY-04 Use 4 spaces for indentation
 
-Use **4 spaces** for each level of indentation. This is the most common choice among the sources consulted, providing enough visual separation to clearly distinguish nested levels without excessive horizontal growth.
+Use **4 spaces** for each level of indentation. This is the most common choice
+among the sources consulted, providing enough visual separation to clearly
+distinguish nested levels without excessive horizontal growth.
 
 ### Example
 
@@ -155,7 +172,10 @@ WHERE
 
 ## LAY-05 Place `JOIN` conditions below the keyword
 
-When joining tables, place the `ON` keyword on a new line, indented one level under the `JOIN` keyword, even when there is a single condition. This clearly separates the join condition from the join declaration and makes it easier to identify at a glance.
+When joining tables, place the `ON` keyword on a new line, indented one level
+under the `JOIN` keyword, even when there is a single condition. This clearly
+separates the join condition from the join declaration and makes it easier to
+identify at a glance.
 
 ### Example
 
@@ -192,7 +212,10 @@ INNER JOIN products
 
 ## LAY-06 Terminate the line after an open parenthesis
 
-When a parenthesised construct spans multiple lines, the opening parenthesis should terminate the line it starts on. The contents should be indented one level, and the closing parenthesis should sit on its own line, aligned with the opening construct.
+When a parenthesised construct spans multiple lines, the opening parenthesis
+should terminate the line it starts on. The contents should be indented one
+level, and the closing parenthesis should sit on its own line, aligned with the
+opening construct.
 
 ### Example
 
@@ -234,7 +257,11 @@ FROM active_drivers
 
 ## LAY-07 Indent CTE bodies one level inside their parentheses
 
-Start the first CTE on the same line as `WITH`, and each following CTE at the same level as `WITH`. Indent the body of every CTE one level inside its parentheses, and put the closing parenthesis on its own line at the level of the CTE name. Leave a blank line between each CTE, and after the last one, for visual separation.
+Start the first CTE on the same line as `WITH`, and each following CTE at the
+same level as `WITH`. Indent the body of every CTE one level inside its
+parentheses, and put the closing parenthesis on its own line at the level of the
+CTE name. Leave a blank line between each CTE, and after the last one, for
+visual separation.
 
 ### Example
 
@@ -287,11 +314,17 @@ INNER JOIN recent_orders
 
 - **For (2)**: PostgreSQL, Brooklyn.
 - **Against (0)**
-- **Not mentioned (7)**: Holywell, Celko, PG.ai, Mozilla, GitLab, Mazur, Supabase.
+- **Not mentioned (7)**: Holywell, Celko, PG.ai, Mozilla, GitLab, Mazur,
+  Supabase.
 
 ## LAY-08 Use one space between all language tokens
 
-Always use exactly one space between language tokens: before and after operators (`=`, `>`, `<`, `!=`, ...) and after commas. Never crowd tokens together or add extra padding spaces to align values across lines. The only exceptions are [aligning `AS` keywords](#lay-09-align-as-keywords-in-a-select-list) and [aligning data types and constraints in `CREATE TABLE`](#lay-10-align-data-types-and-constraints-in-create-table).
+Always use exactly one space between language tokens: before and after operators
+(`=`, `>`, `<`, `!=`, ...) and after commas. Never crowd tokens together or add
+extra padding spaces to align values across lines. The only exceptions are
+[aligning `AS` keywords](#lay-09-align-as-keywords-in-a-select-list) and
+[aligning data types and constraints in
+`CREATE TABLE`](#lay-10-align-data-types-and-constraints-in-create-table).
 
 ### Example
 
@@ -329,9 +362,12 @@ WHERE
 
 ## LAY-09 Align `AS` keywords in a `SELECT` list
 
-When several columns in the same `SELECT` list have an alias, pad the expressions so that all the `AS` keywords line up in the same column, one space after the longest expression. Columns without an alias are left as they are.
+When several columns in the same `SELECT` list have an alias, pad the
+expressions so that all the `AS` keywords line up in the same column, one space
+after the longest expression. Columns without an alias are left as they are.
 
-Aligned aliases make the output columns of a query easy to scan: the expressions are on the left and the resulting column names on the right.
+Aligned aliases make the output columns of a query easy to scan: the expressions
+are on the left and the resulting column names on the right.
 
 ### Example
 
@@ -361,11 +397,18 @@ GROUP BY region
 
 ## LAY-10 Align data types and constraints in `CREATE TABLE`
 
-In a `CREATE TABLE` definition, pad the column names so that all the data types start in the same column, one space after the longest column name. Do the same with the data types, so that the column constraints (`NOT NULL`, `DEFAULT`, ...) also start in the same column.
+In a `CREATE TABLE` definition, pad the column names so that all the data types
+start in the same column, one space after the longest column name. Do the same
+with the data types, so that the column constraints (`NOT NULL`, `DEFAULT`, ...)
+also start in the same column.
 
-For named table constraints at the end of the definition, pad the constraint names so that the constraint bodies (`CHECK (...)`, `FOREIGN KEY (...)`, ...) line up as well.
+For named table constraints at the end of the definition, pad the constraint
+names so that the constraint bodies (`CHECK (...)`, `FOREIGN KEY (...)`, ...)
+line up as well.
 
-As with [aligned `AS` keywords](#lay-09-align-as-keywords-in-a-select-list), this turns the definition into a table that can be read in columns: names, types and constraints.
+As with [aligned `AS` keywords](#lay-09-align-as-keywords-in-a-select-list),
+this turns the definition into a table that can be read in columns: names, types
+and constraints.
 
 ### Example
 
@@ -401,7 +444,8 @@ CREATE TABLE students (
 
 ## LAY-11 Don't add extra spaces inside parentheses or before function parentheses
 
-Do not pad the inside of parentheses with spaces. Do not add a space between a function name and its opening parenthesis.
+Do not pad the inside of parentheses with spaces. Do not add a space between a
+function name and its opening parenthesis.
 
 ### Example
 
@@ -435,9 +479,14 @@ WHERE
 
 ## LAY-12 Put `AND` / `OR` at the beginning of the next line
 
-In a `WHERE`, `HAVING`, or `ON` clause with multiple conditions, place `AND` and `OR` at the **beginning** of the next line rather than at the end of the current one. The operators keep the same indentation as the first condition.
+In a `WHERE`, `HAVING`, or `ON` clause with multiple conditions, place `AND` and
+`OR` at the **beginning** of the next line rather than at the end of the current
+one. The operators keep the same indentation as the first condition.
 
-Placing boolean operators at the start of the line makes conditions easier to scan, as each condition begins with a clear logical marker, and the boundary between conditions is immediately visible. It also keeps diffs small: adding, removing or commenting out a condition touches only its own line.
+Placing boolean operators at the start of the line makes conditions easier to
+scan, as each condition begins with a clear logical marker, and the boundary
+between conditions is immediately visible. It also keeps diffs small: adding,
+removing or commenting out a condition touches only its own line.
 
 ### Example
 
@@ -473,7 +522,9 @@ WHERE
 
 ## LAY-13 Add new lines after semicolons and keyword definitions
 
-Leave a blank line after each semicolon to separate queries. Also leave a new line after each keyword definition to clearly demarcate logical blocks within a script.
+Leave a blank line after each semicolon to separate queries. Also leave a new
+line after each keyword definition to clearly demarcate logical blocks within a
+script.
 
 ### Example
 
@@ -499,11 +550,14 @@ FROM courses;
 
 - **For (2)**: Holywell, Celko.
 - **Against (0)**
-- **Not mentioned (7)**: PostgreSQL, PG.ai, Mozilla, Brooklyn, GitLab, Mazur, Supabase.
+- **Not mentioned (7)**: PostgreSQL, PG.ai, Mozilla, Brooklyn, GitLab, Mazur,
+  Supabase.
 
 ## LAY-14 Use blank lines between logically distinct sections
 
-Leave a blank line between logically distinct sections of code, such as between CTEs, or between groups of related conditions in a long `WHERE` clause. This follows general coding best practices.
+Leave a blank line between logically distinct sections of code, such as between
+CTEs, or between groups of related conditions in a long `WHERE` clause. This
+follows general coding best practices.
 
 ### Example
 
@@ -556,9 +610,12 @@ GROUP BY active_students.full_name
 
 ## LAY-15 Use trailing commas
 
-In lists of arguments (columns in `SELECT`, values in `IN`, ...) place commas at the **end** of each line (trailing) rather than the **beginning** (leading).
+In lists of arguments (columns in `SELECT`, values in `IN`, ...) place commas at
+the **end** of each line (trailing) rather than the **beginning** (leading).
 
-Trailing commas are the more widely supported convention and feel natural to most developers. A missing comma is already flagged by most IDEs before the query is run.
+Trailing commas are the more widely supported convention and feel natural to
+most developers. A missing comma is already flagged by most IDEs before the
+query is run.
 
 ### Example
 
@@ -590,11 +647,23 @@ FROM tickets
 
 ## LAY-16 Keep lines under 120 characters
 
-Lines should not exceed **120 characters**, to keep queries readable in side-by-side views, code reviews, and editors with limited width. The limit is deliberately generous: in queries with several levels of subqueries, indentation alone takes up a good part of the line. Treat it as a ceiling, not a target.
+Lines should not exceed **120 characters**, to keep queries readable in
+side-by-side views, code reviews, and editors with limited width. The limit is
+deliberately generous: in queries with several levels of subqueries, indentation
+alone takes up a good part of the line. Treat it as a ceiling, not a target.
 
-When a line goes over the limit, wrap the expression in parentheses. Break the line after the opening parenthesis, indent the content one level, and put the closing parenthesis on its own line, aligned with the line that opened it. Inside, break at logical points such as before an operator or after a comma, starting each line with the operator in the same way as `AND` / `OR`. The parentheses group the expression into one visible block, with a clear start and end.
+When a line goes over the limit, wrap the expression in parentheses. Break the
+line after the opening parenthesis, indent the content one level, and put the
+closing parenthesis on its own line, aligned with the line that opened it.
+Inside, break at logical points such as before an operator or after a comma,
+starting each line with the operator in the same way as `AND` / `OR`. The
+parentheses group the expression into one visible block, with a clear start and
+end.
 
-Function calls already have their own parentheses, so break inside those instead (see [Terminate the line after an open parenthesis](#lay-06-terminate-the-line-after-an-open-parenthesis)). If an expression is still hard to read after breaking it, move it into a CTE.
+Function calls already have their own parentheses, so break inside those instead
+(see [Terminate the line after an open
+parenthesis](#lay-06-terminate-the-line-after-an-open-parenthesis)). If an
+expression is still hard to read after breaking it, move it into a CTE.
 
 ### Example
 
@@ -629,11 +698,14 @@ INNER JOIN assessments
 
 - **For (2)**: Brooklyn, GitLab.
 - **Against (0)**
-- **Not mentioned (7)**: Holywell, Celko, PostgreSQL, PG.ai, Mozilla, Mazur, Supabase.
+- **Not mentioned (7)**: Holywell, Celko, PostgreSQL, PG.ai, Mozilla, Mazur,
+  Supabase.
 
 ## LAY-17 Break long `IN` lists into multiple indented lines
 
-When an `IN` list contains many values, place each value on its own indented line. This makes the list easier to scan and simplifies adding or removing values in version control diffs.
+When an `IN` list contains many values, place each value on its own indented
+line. This makes the list easier to scan and simplifies adding or removing
+values in version control diffs.
 
 ### Example
 
@@ -670,11 +742,15 @@ WHERE
 
 - **For (2)**: Brooklyn, Mazur.
 - **Against (0)**
-- **Not mentioned (7)**: Holywell, Celko, PostgreSQL, PG.ai, Mozilla, GitLab, Supabase.
+- **Not mentioned (7)**: Holywell, Celko, PostgreSQL, PG.ai, Mozilla, GitLab,
+  Supabase.
 
 ## LAY-18 Use a multi line `CASE` structure
 
-For `CASE` expressions that span multiple lines, indent each `WHEN` one level under `CASE`. Place `THEN` on the same line as its `WHEN`. Put `ELSE` at the same indentation level as `WHEN`. Close with `END` on its own line, aligned with `CASE`.
+For `CASE` expressions that span multiple lines, indent each `WHEN` one level
+under `CASE`. Place `THEN` on the same line as its `WHEN`. Put `ELSE` at the
+same indentation level as `WHEN`. Close with `END` on its own line, aligned with
+`CASE`.
 
 ### Example
 
@@ -706,11 +782,13 @@ FROM requests
 
 - **For (2)**: Brooklyn, Mazur.
 - **Against (0)**
-- **Not mentioned (7)**: Holywell, Celko, PostgreSQL, PG.ai, Mozilla, GitLab, Supabase.
+- **Not mentioned (7)**: Holywell, Celko, PostgreSQL, PG.ai, Mozilla, GitLab,
+  Supabase.
 
 ## LAY-19 A single short `WHEN`/`THEN` can stay on one line
 
-When a `CASE` has only one `WHEN` branch and the `THEN` value is short, the entire expression can be written on a single line.
+When a `CASE` has only one `WHEN` branch and the `THEN` value is short, the
+entire expression can be written on a single line.
 
 ### Example
 
@@ -736,11 +814,14 @@ FROM requests
 
 - **For (1)**: Brooklyn.
 - **Against (0)**
-- **Not mentioned (8)**: Holywell, Celko, PostgreSQL, PG.ai, Mozilla, GitLab, Mazur, Supabase.
+- **Not mentioned (8)**: Holywell, Celko, PostgreSQL, PG.ai, Mozilla, GitLab,
+  Mazur, Supabase.
 
 ## LAY-20 `CASE` inside a function call
 
-When a `CASE` expression is nested inside a function call, place `CASE` and `END` each on their own lines, indented one level inside the function's parentheses.
+When a `CASE` expression is nested inside a function call, place `CASE` and
+`END` each on their own lines, indented one level inside the function's
+parentheses.
 
 ### Example
 
@@ -769,11 +850,16 @@ FROM payments
 
 - **For (1)**: Brooklyn.
 - **Against (0)**
-- **Not mentioned (8)**: Holywell, Celko, PostgreSQL, PG.ai, Mozilla, GitLab, Mazur, Supabase.
+- **Not mentioned (8)**: Holywell, Celko, PostgreSQL, PG.ai, Mozilla, GitLab,
+  Mazur, Supabase.
 
 ## LAY-21 Keep window functions on one line when they fit. Expand sub-clauses when they don't
 
-If a window function fits on a single line without exceeding the line length limit, keep it there. When it needs to break across lines, place each sub-clause (`PARTITION BY`, `ORDER BY`, `ROWS/RANGE BETWEEN`) on its own line indented inside `OVER()`, and put the closing parenthesis on its own line at the same indentation level as the function.
+If a window function fits on a single line without exceeding the line length
+limit, keep it there. When it needs to break across lines, place each sub-clause
+(`PARTITION BY`, `ORDER BY`, `ROWS/RANGE BETWEEN`) on its own line indented
+inside `OVER()`, and put the closing parenthesis on its own line at the same
+indentation level as the function.
 
 ### Example
 
@@ -824,4 +910,5 @@ FROM stock_prices
 
 - **For (2)**: Brooklyn, Mazur.
 - **Against (0)**
-- **Not mentioned (7)**: Holywell, Celko, PostgreSQL, PG.ai, Mozilla, GitLab, Supabase.
+- **Not mentioned (7)**: Holywell, Celko, PostgreSQL, PG.ai, Mozilla, GitLab,
+  Supabase.

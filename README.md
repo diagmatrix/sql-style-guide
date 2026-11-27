@@ -1,8 +1,11 @@
 # SQL Style Guide
 
+[![Lint](https://github.com/diagmatrix/sql-style-guide/actions/workflows/lint.yml/badge.svg)](https://github.com/diagmatrix/sql-style-guide/actions/workflows/lint.yml)
+
 This is my SQL style guide for development.
 
-The rules live in [`guide/`](guide/README.md), one file per topic, each with an explanation and Bad/Good examples.
+The rules live in [`guide/`](guide/README.md), one file per topic, each with an
+explanation and Bad/Good examples.
 
 ## Examples
 
@@ -65,7 +68,9 @@ CREATE TABLE bookings (
 
 ## Use it with AI coding agents
 
-The guide is also packaged as an [agent skill](guide/SKILL.md) that writes, reviews and reformats SQL following these rules. Install it with the [`skills`](https://github.com/vercel-labs/skills) CLI:
+The guide is also packaged as an [agent skill](guide/SKILL.md) that writes,
+reviews and reformats SQL following these rules. Install it with the
+[`skills`](https://github.com/vercel-labs/skills) CLI:
 
 ```bash
 # Current project only
@@ -77,8 +82,20 @@ npx skills add diagmatrix/sql-style-guide -g
 
 Add `-a claude-code` (or another agent's name) to install it for one agent only.
 
-Once it is installed, ask for SQL as usual ("write a query that...", "review `reports/churn.sql`", "clean up this migration without changing what it does"). Agents don't always open a skill for quick SQL tasks, so if you want it applied every time, add a line like this to your agent instructions (for example `CLAUDE.md` or `AGENTS.md`):
+Once it is installed, ask for SQL as usual ("write a query that...", "review
+`reports/churn.sql`", "clean up this migration without changing what it does").
+Agents don't always open a skill for quick SQL tasks, so if you want it applied
+every time, add a line like this to your agent instructions (for example
+`CLAUDE.md` or `AGENTS.md`):
 
-```
+```text
 Whenever you write, edit or review SQL, use the sql-style-guide skill first.
 ```
+
+## Contributing
+
+Markdown files are linted with
+[markdownlint](https://github.com/DavidAnson/markdownlint), and a GitHub
+Actions workflow fails any push or pull request with lint errors. See
+[`CONTRIBUTING.md`](CONTRIBUTING.md) for how to run it locally and how rules
+are written.

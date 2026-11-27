@@ -2,7 +2,9 @@
 
 ## KWD-01 Use uppercase for reserved words
 
-Always use **UPPERCASE** for reserved words (`SELECT`, `WHERE`, `AS`, ...). This differentiates the SQL logic from the tables and columns used in the queries and table definitions.
+Always use **UPPERCASE** for reserved words (`SELECT`, `WHERE`, `AS`, ...). This
+differentiates the SQL logic from the tables and columns used in the queries and
+table definitions.
 
 ### Example
 
@@ -67,11 +69,13 @@ WHERE
 
 - **For (2)**: Holywell, Celko.
 - **Against (0)**
-- **Not mentioned (7)**: PostgreSQL, Mozilla, GitLab, PG.ai, Brooklyn, Mazur, Supabase.
+- **Not mentioned (7)**: PostgreSQL, Mozilla, GitLab, PG.ai, Brooklyn, Mazur,
+  Supabase.
 
 ## KWD-03 Avoid vendor-specific keywords
 
-If an ANSI SQL keyword exists for a function or procedure, use it instead of a vendor-specific one.
+If an ANSI SQL keyword exists for a function or procedure, use it instead of a
+vendor-specific one.
 
 ### Example
 
@@ -99,15 +103,24 @@ FROM employees
 
 - **For (2)**: Holywell, Celko.
 - **Against (0)**
-- **Not mentioned (7)**: PostgreSQL, Mozilla, GitLab, PG.ai, Brooklyn, Mazur, Supabase.
+- **Not mentioned (7)**: PostgreSQL, Mozilla, GitLab, PG.ai, Brooklyn, Mazur,
+  Supabase.
 
 ## KWD-04 Use lowercase for functions
 
-Treat functions as identifiers and always write them in **lowercase**: `count()` instead of `COUNT()`.
+Treat functions as identifiers and always write them in **lowercase**: `count()`
+instead of `COUNT()`.
 
-Mixing cases is common: single-word functions tend to be written in uppercase (`COALESCE`, `SUM`, ...), while multi-word ones are written in lowercase (`string_agg`, `json_array_elements`). Always using lowercase removes that inconsistency.
+Mixing cases is common: single-word functions tend to be written in uppercase
+(`COALESCE`, `SUM`, ...), while multi-word ones are written in lowercase
+(`string_agg`, `json_array_elements`). Always using lowercase removes that
+inconsistency.
 
-It also keeps uppercase meaningful. The [Bouma](https://en.wikipedia.org/wiki/Bouma) (the outline shape) of an uppercase word is a rectangle, which makes it stand out from regular words. Reserving uppercase for reserved words keeps the structure of the query easy to see; using it for functions too dilutes that.
+It also keeps uppercase meaningful. The
+[Bouma](https://en.wikipedia.org/wiki/Bouma) (the outline shape) of an uppercase
+word is a rectangle, which makes it stand out from regular words. Reserving
+uppercase for reserved words keeps the structure of the query easy to see; using
+it for functions too dilutes that.
 
 ### Example
 
@@ -141,9 +154,13 @@ GROUP BY warehouse_id
 
 ## KWD-05 Use uppercase for data types
 
-Data types are written in **UPPERCASE**, the same as reserved words, both in table definitions and in type casts. Mixing cases makes definitions inconsistent, so pick one and stick to it.
+Data types are written in **UPPERCASE**, the same as reserved words, both in
+table definitions and in type casts. Mixing cases makes definitions
+inconsistent, so pick one and stick to it.
 
-User-defined types (enums, domains, composite types) are identifiers rather than reserved words, so they follow the naming rules instead: lowercase, with underscores.
+User-defined types (enums, domains, composite types) are identifiers rather than
+reserved words, so they follow the naming rules instead: lowercase, with
+underscores.
 
 ### Example
 
