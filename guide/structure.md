@@ -1,4 +1,4 @@
-# Subqueries and CTEs
+# Query structure
 
 ## Prefer CTEs over nested subqueries
 
@@ -170,118 +170,100 @@ FROM student_scores
  - **Against (0)**
  - **Not mentioned (6)**: Holywell, Celko, PostgreSQL, PG.ai, Mozilla, Mazur.
 
-## CTE and subquery names should be descriptive
+## Use `ON` for all join conditions; avoid `USING`
 
-CTE names should clearly convey what the CTE produces. Prefer names that read like a noun phrase describing the result set  (like `active_students`) rather than abbreviations or vague labels like `data` or `tmp`. Make names as long as they need to be to stay unambiguous, without padding them with unnecessary words.
-
-The same applies to subquery aliases, for example a subquery in a `JOIN` or `FROM` clause.
+Always express join conditions with `ON`, even when the joining columns share the same name. Avoid `USING`, as it silently merges the columns into one in the result set, which can cause unexpected behaviour when adding aliases or when the query is refactored.
 
 ##### Example
 
 Bad:
 ```sql
-WITH d AS (
-...
-),
-
-tmp AS (
-...
-),
-
-final AS (
-...
-)
+SELECT
+    customers.full_name,
+    orders.total_amount
+FROM customers
+INNER JOIN orders USING (customer_id)
 ```
 
 Good:
 ```sql
-WITH active_students AS (
-...
-),
-
-completed_enrolments AS (
-...
-),
-
-student_pass_rates AS (
-...
-)
-```
-
-Bad (subquery):
-```sql
 SELECT
-    students.full_name,
-    sq.total_courses
-FROM students
-INNER JOIN (
-    SELECT
-        student_id,
-        count(course_id) AS total_courses
-    FROM enrolments
-    GROUP BY student_id
-) AS sq
-    ON students.id = sq.student_id
-```
-
-Good (subquery):
-```sql
-SELECT
-    students.full_name,
-    student_course_counts.total_courses
-FROM students
-INNER JOIN (
-    SELECT
-        student_id,
-        count(course_id) AS total_courses
-    FROM enrolments
-    GROUP BY student_id
-) AS student_course_counts
-    ON students.id = student_course_counts.student_id
+    customers.full_name,
+    orders.total_amount
+FROM customers
+INNER JOIN orders
+    ON customers.id = orders.customer_id
 ```
 
 #### Source breakdown
 
- - **For descriptive (1)**: Brooklyn.
- - **For concise but clear (1)**: GitLab.
- - **Not mentioned (7)**: Holywell, Celko, PostgreSQL, PG.ai, Mozilla, Mazur, Supabase.
+ - **For (2)**: Brooklyn, GitLab.
+ - **Against  (1)**: PostgreSQL.
+ - **Not mentioned (6)**: Holywell, Celko, PG.ai, Mozilla, Mazur, Supabase.
 
-## Do not prefix or suffix CTE names with `cte`
+## Put the first-referenced table immediately after `ON`
 
-Avoid names like `cte_open_tickets` or `open_tickets_cte`. The `WITH` keyword already makes the CTE context clear, so the redundant label adds noise without adding information.
+In a join condition, write the table that was introduced first (the left-hand table) immediately after the `ON` keyword. This makes fan-out risk visible at a glance: if the left table's key is not on the left side of the condition, a row duplication bug may be hiding.
 
 ##### Example
 
 Bad:
 ```sql
-WITH cte_open_tickets AS (
-    SELECT
-        id,
-        subject
-    FROM tickets
-    WHERE
-        is_closed IS false
-)
-
 SELECT
-    *
-FROM cte_open_tickets
+    doctors.full_name,
+    appointments.scheduled_at
+FROM doctors
+INNER JOIN appointments
+    ON appointments.doctor_id = doctors.id
 ```
 
 Good:
 ```sql
-WITH open_tickets AS (
-    SELECT
-        id,
-        subject
-    FROM tickets
-    WHERE
-        is_closed IS false
-)
-
 SELECT
-    *
-FROM open_tickets
+    doctors.full_name,
+    appointments.scheduled_at
+FROM doctors
+INNER JOIN appointments
+    ON doctors.id = appointments.doctor_id
+```
+
+#### Source breakdown
+
+ - **For (2)**: Brooklyn, Mazur.
+ - **Against (0)**
+ - **Not mentioned (7)**: Holywell, Celko, PostgreSQL, PG.ai, Mozilla, GitLab, Supabase.
+
+## For `INNER JOIN`, keep filter conditions in `WHERE`, not in the `JOIN` clause
+
+The `ON` clause should express only the relationship between tables. Row-level filters belong in `WHERE`. Mixing business logic into `ON` obscures intent, as a reader scanning `ON` expects join conditions, not data filters.
+
+As an important note, this rule applies only to `INNER JOIN`. With `LEFT JOIN`, moving a condition from `ON` to `WHERE` changes the semantics and effectively converts it into an inner join.
+
+##### Example
+
+Bad:
+```sql
+SELECT
+    drivers.full_name,
+    deliveries.tracking_code
+FROM drivers
+INNER JOIN deliveries
+    ON drivers.id = deliveries.driver_id
+    AND drivers.is_active IS true
+    AND deliveries.delivered_at IS NOT NULL
+```
+
+Good:
+```sql
+SELECT
+    drivers.full_name,
+    deliveries.tracking_code
+FROM drivers
+INNER JOIN deliveries
+    ON drivers.id = deliveries.driver_id
+WHERE
+    drivers.is_active IS true
+    AND deliveries.delivered_at IS NOT NULL
 ```
 
 #### Source breakdown

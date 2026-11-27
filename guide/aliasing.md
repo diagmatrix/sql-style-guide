@@ -1,4 +1,4 @@
-# Alias rules
+# Aliasing and references
 
 ## Always use the `AS` keyword explicitly
 
@@ -103,7 +103,6 @@ INNER JOIN school_district_areas AS districts
  - **For (3)**: Brooklyn, Mazur, GitLab.
  - **Against (2)**: Holywell, PostgreSQL.
  - **Not mentioned (4)**: Celko, Mozilla, Supabase, PG.ai.
-
 
 ## Column aliases should semantically relate to what they represent
 

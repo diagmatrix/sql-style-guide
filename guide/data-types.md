@@ -1,4 +1,4 @@
-# Data types
+# Data types and literals
 
 ## Use `NUMERIC` or `DECIMAL` for monetary and precision values
 

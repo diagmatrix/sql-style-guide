@@ -1,10 +1,10 @@
-# Naming rules
+# Naming
 
 These rules apply mostly to names chosen by developers, and may not apply when using replicated data from a source that does not adhere to the rules. In those cases, it is better to keep the original structure for clarity reasons (for example, not renaming columns to use `snake_case` in tables that are replicas of endpoints of APIs that use `camelCase`).
 
-## General naming rules
 
-### Use snake case
+
+## Use snake case
 
 Always use snake case (lowercase with underscores, like `snake_case`) for naming.
 
@@ -34,7 +34,7 @@ FROM employees
  - **Against (0)**
  - **Not mentioned (0)**
 
-### Names must be descriptive, consistent and unambiguous
+## Names must be descriptive, consistent and unambiguous
 
 Use descriptive names and consistent across tables (for example, `cohort` should mean the same and have the same data type everywhere). Do not use descriptive prefixes that explain the role or type of the identifier (`tbl_`, `sp_`, `vw_`, ...). The exception is table constraint names, which may start with a prefix for the constraint type (`chk_`, `fk_`, ...), as the type is part of what the name has to convey.
 
@@ -99,7 +99,7 @@ Regarding no vague identifiers:
  - **Against (1)**: PG.ai.
  - **Not mentioned (5)**: PostgreSQL, Brooklyn, Mazur, Mozilla, Supabase.
 
-### Use unquoted alphanumeric names
+## Use unquoted alphanumeric names
 
 Use only lowercase alphanumeric characters for names separated by underscores, beginning always with a letter. For readability reasons, they should never end in an underscore or contain multiple consecutive underscores. Always avoid quoted identifiers for names, as they are prone to cause query errors (many database providers are case insensitive, so forgetting the quotes leads to incorrect column assignations).
 
@@ -146,7 +146,7 @@ Regarding quoted identifiers:
  - **Against (0)**
  - **Not mentioned (6)**: PostgreSQL, PG.ai, Brooklyn, Mazur, Mozilla, Supabase.
 
-### Do not use reserved words as identifiers
+## Do not use reserved words as identifiers
 
 Never use words such as `sum`, `count`, ... It will have to be quoted everywhere it is used or it will fail.
 
@@ -232,9 +232,7 @@ CREATE TABLE castings (...);
  - **Against (0)**
  - **Not mentioned (7)**: Brooklyn, GitLab, PostgreSQL, Mozilla, Mazur, Supabase, PG.ai.
 
-## Column naming rules
-
-### Use singular names for columns
+## Use singular names for columns
 
 A column holds one value per row, so using singular reflects that. An exception can be made for `ARRAY` or `JSON` columns, but those should be avoided where possible.
 
@@ -264,7 +262,7 @@ CREATE TABLE players (
  - **Against (0)**
  - **Not mentioned (5)**: Brooklyn, GitLab, Mozilla, Mazur, PG.ai.
 
-### Use standardised prefixes and suffixes
+## Use standardised prefixes and suffixes
 
 Use standardised prefixes and suffixes to convey meaning, making them understandable without the need to inspect their values and data types. 
 
@@ -318,7 +316,7 @@ Regarding bare `id` primary keys with `_id` foreign keys:
  - **Against (2)**: Holywell, Celko (they avoid bare `id` columns).
  - **Not mentioned (5)**: PostgreSQL, Mozilla, PG.ai, GitLab, Mazur.
 
-### Do not use the table name as a column name or prefix
+## Do not use the table name as a column name or prefix
 
 Do not duplicate the table name in column name. This means two different things:
 1. Do not use the table name as a prefix for a column (no `courses.course_name`).
@@ -349,3 +347,123 @@ CREATE TABLE grades (
  - **For (3)**: Holywell, Celko, Supabase.
  - **Against (0)**
  - **Not mentioned (6)**: Brooklyn, GitLab, Mozilla, Mazur, PG.ai, PostgreSQL.
+
+## CTE and subquery names should be descriptive
+
+CTE names should clearly convey what the CTE produces. Prefer names that read like a noun phrase describing the result set  (like `active_students`) rather than abbreviations or vague labels like `data` or `tmp`. Make names as long as they need to be to stay unambiguous, without padding them with unnecessary words.
+
+The same applies to subquery aliases, for example a subquery in a `JOIN` or `FROM` clause.
+
+##### Example
+
+Bad:
+```sql
+WITH d AS (
+...
+),
+
+tmp AS (
+...
+),
+
+final AS (
+...
+)
+```
+
+Good:
+```sql
+WITH active_students AS (
+...
+),
+
+completed_enrolments AS (
+...
+),
+
+student_pass_rates AS (
+...
+)
+```
+
+Bad (subquery):
+```sql
+SELECT
+    students.full_name,
+    sq.total_courses
+FROM students
+INNER JOIN (
+    SELECT
+        student_id,
+        count(course_id) AS total_courses
+    FROM enrolments
+    GROUP BY student_id
+) AS sq
+    ON students.id = sq.student_id
+```
+
+Good (subquery):
+```sql
+SELECT
+    students.full_name,
+    student_course_counts.total_courses
+FROM students
+INNER JOIN (
+    SELECT
+        student_id,
+        count(course_id) AS total_courses
+    FROM enrolments
+    GROUP BY student_id
+) AS student_course_counts
+    ON students.id = student_course_counts.student_id
+```
+
+#### Source breakdown
+
+ - **For descriptive (1)**: Brooklyn.
+ - **For concise but clear (1)**: GitLab.
+ - **Not mentioned (7)**: Holywell, Celko, PostgreSQL, PG.ai, Mozilla, Mazur, Supabase.
+
+## Do not prefix or suffix CTE names with `cte`
+
+Avoid names like `cte_open_tickets` or `open_tickets_cte`. The `WITH` keyword already makes the CTE context clear, so the redundant label adds noise without adding information.
+
+##### Example
+
+Bad:
+```sql
+WITH cte_open_tickets AS (
+    SELECT
+        id,
+        subject
+    FROM tickets
+    WHERE
+        is_closed IS false
+)
+
+SELECT
+    *
+FROM cte_open_tickets
+```
+
+Good:
+```sql
+WITH open_tickets AS (
+    SELECT
+        id,
+        subject
+    FROM tickets
+    WHERE
+        is_closed IS false
+)
+
+SELECT
+    *
+FROM open_tickets
+```
+
+#### Source breakdown
+
+ - **For (1)**: Brooklyn.
+ - **Against (0)**
+ - **Not mentioned (8)**: Holywell, Celko, PostgreSQL, PG.ai, Mozilla, GitLab, Mazur, Supabase.
