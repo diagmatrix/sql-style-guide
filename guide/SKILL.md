@@ -13,10 +13,10 @@ The guide describes itself as meant "to inform, not dictate": when following a r
 
 **Write SQL.** Follow the checklist from the start, so the code needs no style pass afterwards.
 
-**Review SQL.** Check the SQL against the checklist and report each problem. Use this format, grouped by rule, most impactful first:
+**Review SQL.** Check the SQL against the checklist and report each problem. Use this format, grouped by rule and citing its code (e.g. `LAY-03`), most impactful first:
 
-```
-### <Rule name> (<reference file>)
+```text
+### <Code> <Rule name> (<reference file>)
 - Line <n>: <what is wrong> → <how to fix it>
 ```
 
@@ -35,97 +35,107 @@ When reformatting a file, keep anything that isn't SQL (surrounding code, migrat
 ## Rule checklist
 
 ### Layout (`layout.md`)
-- Left-align all clause keywords at the same margin. No "river" (right-aligned) keywords.
-- Each major clause (`SELECT`, `FROM`, `WHERE`, `GROUP BY`, `HAVING`, `ORDER BY`, ...) starts its own line.
-- `SELECT`, `WHERE` and `HAVING`: every argument on its own line below the keyword, indented one level, **even a single one** (`SELECT` / `    *`).
-- `FROM`, `JOIN`, `GROUP BY`, `ORDER BY` (and other clauses): arguments stay on the keyword line (`FROM orders`, `GROUP BY region, country_code`).
-- Indent with 4 spaces.
-- `ON` goes on the line after its `JOIN`, indented one level, even with one condition. Extra join conditions follow as `AND` lines at the same indentation.
-- An opening parenthesis that starts a multi-line construct ends its line; content indented one level; closing parenthesis on its own line, aligned with the line that opened it.
-- CTEs: first one on the `WITH` line (`WITH active_customers AS (`), later ones at the same level as `WITH`; body indented one level; `)` on its own line; a blank line between CTEs and after the last one.
-- Exactly one space between tokens (around operators, after commas). No padding to align things, except the two alignment rules below.
-- Align `AS` keywords in a `SELECT` list: pad expressions so every `AS` sits one space after the longest aliased expression. Columns without alias are left alone.
-- In `CREATE TABLE`, align data types one space after the longest column name, and column constraints one space after the longest type. Named table constraints at the end: pad names so the `CHECK (...)` / `FOREIGN KEY (...)` bodies line up.
-- No spaces inside parentheses, none between a function name and `(`.
-- `AND` / `OR` start the next line, at the same indentation as the first condition.
-- A blank line after each `;` between statements.
-- Blank lines between logically distinct sections (between CTEs, before the main query, between groups of conditions).
-- Trailing commas, never leading commas.
-- Lines under 120 characters. To break a long expression, wrap it in parentheses, break after `(`, indent, start each continuation line with its operator, close `)` on its own line. Break inside a function's own parentheses instead of adding new ones. Still unreadable → move it into a CTE.
-- Long `IN` lists: one value per line, indented, inside `IN (` ... `)`.
-- `CASE`: multi-line layout with each `WHEN ... THEN ...` indented under `CASE`, `ELSE` at the `WHEN` level, `END` aligned with `CASE`. A single short `WHEN` may stay on one line. Inside a function call, `CASE` and `END` go on their own lines inside the parentheses.
-- Window functions on one line when they fit under 120 characters; otherwise `OVER (` ends the line, each sub-clause (`PARTITION BY`, `ORDER BY`, `ROWS BETWEEN`) on its own indented line, `)` aligned with the function.
+
+- **LAY-01** Left-align all clause keywords at the same margin. No "river" (right-aligned) keywords.
+- **LAY-02** Each major clause (`SELECT`, `FROM`, `WHERE`, `GROUP BY`, `HAVING`, `ORDER BY`, ...) starts its own line.
+- **LAY-03** `SELECT`, `WHERE` and `HAVING`: every argument on its own line below the keyword, indented one level, **even a single one** (`SELECT` / `*`).
+- **LAY-03** `FROM`, `JOIN`, `GROUP BY`, `ORDER BY` (and other clauses): arguments stay on the keyword line (`FROM orders`, `GROUP BY region, country_code`).
+- **LAY-04** Indent with 4 spaces.
+- **LAY-05** `ON` goes on the line after its `JOIN`, indented one level, even with one condition. Extra join conditions follow as `AND` lines at the same indentation.
+- **LAY-06** An opening parenthesis that starts a multi-line construct ends its line; content indented one level; closing parenthesis on its own line, aligned with the line that opened it.
+- **LAY-07** CTEs: first one on the `WITH` line (`WITH active_customers AS (`), later ones at the same level as `WITH`; body indented one level; `)` on its own line; a blank line between CTEs and after the last one.
+- **LAY-08** Exactly one space between tokens (around operators, after commas). No padding to align things, except the two alignment rules below.
+- **LAY-09** Align `AS` keywords in a `SELECT` list: pad expressions so every `AS` sits one space after the longest aliased expression. Columns without alias are left alone.
+- **LAY-10** In `CREATE TABLE`, align data types one space after the longest column name, and column constraints one space after the longest type. Named table constraints at the end: pad names so the `CHECK (...)` / `FOREIGN KEY (...)` bodies line up.
+- **LAY-11** No spaces inside parentheses, none between a function name and `(`.
+- **LAY-12** `AND` / `OR` start the next line, at the same indentation as the first condition.
+- **LAY-13** A blank line after each `;` between statements.
+- **LAY-14** Blank lines between logically distinct sections (between CTEs, before the main query, between groups of conditions).
+- **LAY-15** Trailing commas, never leading commas.
+- **LAY-16** Lines under 120 characters. To break a long expression, wrap it in parentheses, break after `(`, indent, start each continuation line with its operator, close `)` on its own line. Break inside a function's own parentheses instead of adding new ones. Still unreadable → move it into a CTE.
+- **LAY-17** Long `IN` lists: one value per line, indented, inside `IN (` ... `)`.
+- **LAY-18, LAY-19, LAY-20** `CASE`: multi-line layout with each `WHEN ... THEN ...` indented under `CASE`, `ELSE` at the `WHEN` level, `END` aligned with `CASE`. A single short `WHEN` may stay on one line. Inside a function call, `CASE` and `END` go on their own lines inside the parentheses.
+- **LAY-21** Window functions on one line when they fit under 120 characters; otherwise `OVER (` ends the line, each sub-clause (`PARTITION BY`, `ORDER BY`, `ROWS BETWEEN`) on its own indented line, `)` aligned with the function.
 
 ### Keywords and functions (`keywords.md`)
-- Reserved words in UPPERCASE (`SELECT`, `AS`, `IS`, `CASE`, ...).
-- Full keyword forms instead of abbreviations (`INNER JOIN`, not `JOIN`).
-- Prefer ANSI functions over vendor-specific ones when an ANSI equivalent exists (`extract(YEAR FROM x)` over `date_part('year', x)`).
-- Functions in lowercase (`count()`, `coalesce()`, `string_agg()`).
-- Built-in data types in UPPERCASE (`INTEGER`, `VARCHAR(255)`, `TIMESTAMP`). User-defined types follow naming rules (lowercase snake_case).
-- Boolean literals are written `true` / `false` (lowercase), as in `IS true`.
+
+- **KWD-01** Reserved words in UPPERCASE (`SELECT`, `AS`, `IS`, `CASE`, ...).
+- **KWD-02** Full keyword forms instead of abbreviations (`INNER JOIN`, not `JOIN`).
+- **KWD-03** Prefer ANSI functions over vendor-specific ones when an ANSI equivalent exists (`extract(YEAR FROM x)` over `date_part('year', x)`).
+- **KWD-04** Functions in lowercase (`count()`, `coalesce()`, `string_agg()`).
+- **KWD-05** Built-in data types in UPPERCASE (`INTEGER`, `VARCHAR(255)`, `TIMESTAMP`). User-defined types follow naming rules (lowercase snake_case).
+- **TYP-02** Boolean literals are written `true` / `false` (lowercase), as in `IS true`.
 
 ### Naming (`naming.md`)
-- snake_case; only lowercase letters, digits and underscores; start with a letter; no trailing or double underscores; never quoted identifiers.
-- Descriptive, consistent across tables, unambiguous. No type/role prefixes (`tbl_`, `sp_`, `vw_`). Exception: constraint names may carry a type prefix (`chk_`, `fk_`, ...).
-- Avoid abbreviations unless the whole team understands them.
-- Never use reserved words as names (`group`, `union`, `rank`, `order`, `user`, ...).
-- Tables: collective or plural nouns (`staff`, `orders`); singular only for single-row tables. Relationship tables get a real name when one exists (`enrolments`, not `student_courses`).
-- Columns: singular (`goal_count`, not `goals`). Don't repeat the table name (`products.name`, not `products.product_name`; avoid `grades.grade`).
-- A table's own primary key is `id`; `_id` marks foreign keys and other identifiers (`orders.customer_id`).
-- Standard affixes: `_id`, `_status`, `_total`/`total_`, `_name`, `_size`, `_date` (date), `_at` (timestamp), `_addr`/`_address`, `is_`/`has_` (booleans), unit suffixes (`_eur`, `_ms`), `_month`/`_day`.
-- Generic columns (`id`, `name`, `type`) selected from a table other than the one the result describes get a `table_column` alias (`schools.name AS school_name`). Columns of the table the result is about keep their name (`customers.id` in a query returning customers).
-- CTE and subquery names are descriptive noun phrases (`active_customers`, not `tmp`, `d`, `sq`), with no `cte_` prefix or `_cte` suffix.
+
+- **NAM-01, NAM-03** snake_case; only lowercase letters, digits and underscores; start with a letter; no trailing or double underscores; never quoted identifiers.
+- **NAM-02** Descriptive, consistent across tables, unambiguous. No type/role prefixes (`tbl_`, `sp_`, `vw_`). Exception: constraint names may carry a type prefix (`chk_`, `fk_`, ...).
+- **NAM-02** Avoid abbreviations unless the whole team understands them.
+- **NAM-04** Never use reserved words as names (`group`, `union`, `rank`, `order`, `user`, ...).
+- **NAM-05, NAM-06** Tables: collective or plural nouns (`staff`, `orders`); singular only for single-row tables. Relationship tables get a real name when one exists (`enrolments`, not `student_courses`).
+- **NAM-07, NAM-09** Columns: singular (`goal_count`, not `goals`). Don't repeat the table name (`products.name`, not `products.product_name`; avoid `grades.grade`).
+- **NAM-08** A table's own primary key is `id`; `_id` marks foreign keys and other identifiers (`orders.customer_id`).
+- **NAM-08** Standard affixes: `_id`, `_status`, `_total`/`total_`, `_name`, `_size`, `_date` (date), `_at` (timestamp), `_addr`/`_address`, `is_`/`has_` (booleans), unit suffixes (`_eur`, `_ms`), `_month`/`_day`.
+- **NAM-02** Generic columns (`id`, `name`, `type`) selected from a table other than the one the result describes get a `table_column` alias (`schools.name AS school_name`). Columns of the table the result is about keep their name (`customers.id` in a query returning customers).
+- **NAM-10, NAM-11** CTE and subquery names are descriptive noun phrases (`active_customers`, not `tmp`, `d`, `sq`), with no `cte_` prefix or `_cte` suffix.
 
 ### Aliasing and references (`aliasing.md`)
-- Always write `AS`, for columns and tables.
-- Every aggregate or computed column gets an alias (`count(*) AS total_orders`).
-- Prefer full table names. Alias only long or ambiguous names (or self-joins), with a meaningful word, never initials or `t1`/`x` (`school_district_areas AS districts`).
-- Column aliases follow column naming rules and say what the value is (`average_score`, not `scores_1`).
-- In queries with more than one table, qualify every column reference. In single-table queries, don't.
+
+- **ALI-01** Always write `AS`, for columns and tables.
+- **ALI-02** Every aggregate or computed column gets an alias (`count(*) AS total_orders`).
+- **ALI-03** Prefer full table names. Alias only long or ambiguous names (or self-joins), with a meaningful word, never initials or `t1`/`x` (`school_district_areas AS districts`).
+- **ALI-04** Column aliases follow column naming rules and say what the value is (`average_score`, not `scores_1`).
+- **ALI-05, ALI-06** In queries with more than one table, qualify every column reference. In single-table queries, don't.
 
 ### Comments (`comments.md`)
-- `/* */` for every written comment, one line or several; multi-line comments use ` * ` line prefixes.
-- `--` only for commented-out code, one per line. Prefer deleting dead code over keeping it.
-- Comment non-obvious intent and business rules, not what the code plainly says. Explain CTEs whose logic is surprising.
+
+- **CMT-01** `/* */` for every written comment, one line or several; multi-line comments use ` * ` line prefixes.
+- **CMT-01** `--` only for commented-out code, one per line. Prefer deleting dead code over keeping it.
+- **CMT-02, CMT-03** Comment non-obvious intent and business rules, not what the code plainly says. Explain CTEs whose logic is surprising.
 
 ### Data types and literals (`data-types.md`)
-- `NUMERIC` / `DECIMAL` for money and exact values; `REAL` / `FLOAT` only for genuine floating-point maths.
-- `BOOLEAN` for flags, with `true`/`false`, never `1`/`0`.
-- Defaults match the column type (`DEFAULT false` on a `BOOLEAN`, `DEFAULT 0` on a `NUMERIC`).
-- ISO 8601 date/time values, written with typed literals: `DATE '2024-09-01'`, `TIMESTAMP '2025-07-31T23:59:59'`.
+
+- **TYP-01** `NUMERIC` / `DECIMAL` for money and exact values; `REAL` / `FLOAT` only for genuine floating-point maths.
+- **TYP-02** `BOOLEAN` for flags, with `true`/`false`, never `1`/`0`.
+- **TYP-03** Defaults match the column type (`DEFAULT false` on a `BOOLEAN`, `DEFAULT 0` on a `NUMERIC`).
+- **TYP-04** ISO 8601 date/time values, written with typed literals: `DATE '2024-09-01'`, `TIMESTAMP '2025-07-31T23:59:59'`.
 
 ### Expressions and conditions (`expressions.md`)
-- Use `BETWEEN` for ranges and `IN (...)` for value sets instead of chains of `AND` / `OR`.
-- `CASE`: use the simple form (`CASE status WHEN ...`) when comparing one expression.
-- Booleans compared with `IS true` / `IS false`, never implicit (`WHERE is_active`) or `NOT flag`.
-- `!=`, not `<>`.
-- No redundant parentheses (except to wrap a long expression across lines).
+
+- **EXP-01** Use `BETWEEN` for ranges and `IN (...)` for value sets instead of chains of `AND` / `OR`.
+- **EXP-02** `CASE`: use the simple form (`CASE status WHEN ...`) when comparing one expression.
+- **EXP-03** Booleans compared with `IS true` / `IS false`, never implicit (`WHERE is_active`) or `NOT flag`.
+- **EXP-04** `!=`, not `<>`.
+- **EXP-05** No redundant parentheses (except to wrap a long expression across lines).
 
 ### Query structure (`structure.md`)
-- Prefer CTEs over nested subqueries.
-- Avoid correlated subqueries; use a CTE plus `JOIN`.
-- One logical step per CTE.
-- Always `ON`, never `USING`.
-- In the condition, the table introduced first goes first (`ON customers.id = orders.customer_id`).
-- For `INNER JOIN`, row filters belong in `WHERE`; `ON` holds only the relationship. (Not for `LEFT JOIN`: moving them changes the result.)
+
+- **STR-01** Prefer CTEs over nested subqueries.
+- **STR-02** Avoid correlated subqueries; use a CTE plus `JOIN`.
+- **STR-03** One logical step per CTE.
+- **STR-04** Always `ON`, never `USING`.
+- **STR-05** In the condition, the table introduced first goes first (`ON customers.id = orders.customer_id`).
+- **STR-06** For `INNER JOIN`, row filters belong in `WHERE`; `ON` holds only the relationship. (Not for `LEFT JOIN`: moving them changes the result.)
 
 ### Clauses (`clauses.md`)
-- `UNION ALL` unless removing duplicates is actually required.
-- Deduplicate with `SELECT DISTINCT` (written `SELECT` / `    DISTINCT` / columns), not `GROUP BY` on every column.
-- No `ORDER BY` unless the result's order is part of what's required.
-- `GROUP BY` uses column names or select-list aliases, never positions (`GROUP BY 1, 2`).
-- Filters that don't depend on aggregates go in `WHERE`, not `HAVING`.
-- Group by a select-list alias rather than repeating the expression. Not standard SQL: it works in PostgreSQL, MySQL, BigQuery, Snowflake, but not SQL Server or Oracle, where you compute the expression in a CTE or subquery and group by its column.
-- Non-aggregated columns first in `SELECT`, aggregates last.
+
+- **CLS-01** `UNION ALL` unless removing duplicates is actually required.
+- **CLS-02** Deduplicate with `SELECT DISTINCT` (written `SELECT` / `DISTINCT` / columns), not `GROUP BY` on every column.
+- **CLS-03** No `ORDER BY` unless the result's order is part of what's required.
+- **CLS-04** `GROUP BY` uses column names or select-list aliases, never positions (`GROUP BY 1, 2`).
+- **CLS-05** Filters that don't depend on aggregates go in `WHERE`, not `HAVING`.
+- **CLS-06** Group by a select-list alias rather than repeating the expression. Not standard SQL: it works in PostgreSQL, MySQL, BigQuery, Snowflake, but not SQL Server or Oracle, where you compute the expression in a CTE or subquery and group by its column.
+- **CLS-07** Non-aggregated columns first in `SELECT`, aggregates last.
 
 ### Schema objects (`schema.md`)
-- Every table has at least one key.
-- Name constraints explicitly (`CONSTRAINT chk_products_price_min CHECK (price > 0)`). `PRIMARY KEY`, `FOREIGN KEY` and `UNIQUE` may use generated names.
-- Table-level constraints go after the columns, separated by a blank line; `PRIMARY KEY` is the first of them.
-- One rule per `CHECK`; guard numeric ranges (at least `> 0` where a value must be positive).
-- Validate text formats with `LIKE` / `SIMILAR TO`.
-- List the columns explicitly; never `SELECT *` in a view.
-- Only create a view for a clear, recurring purpose, not as a mirror of a table.
+
+- **DDL-01** Every table has at least one key.
+- **DDL-02** Name constraints explicitly (`CONSTRAINT chk_products_price_min CHECK (price > 0)`). `PRIMARY KEY`, `FOREIGN KEY` and `UNIQUE` may use generated names.
+- **DDL-03, DDL-04** Table-level constraints go after the columns, separated by a blank line; `PRIMARY KEY` is the first of them.
+- **DDL-05** One rule per `CHECK`; guard numeric ranges (at least `> 0` where a value must be positive).
+- **DDL-06** Validate text formats with `LIKE` / `SIMILAR TO`.
+- **DDL-07** List the columns explicitly; never `SELECT *` in a view.
+- **DDL-08** Only create a view for a clear, recurring purpose, not as a mirror of a table.
 
 ## Example
 

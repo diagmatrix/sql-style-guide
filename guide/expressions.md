@@ -1,12 +1,13 @@
 # Expressions and conditions
 
-## Combine multiple boolean conditions with `BETWEEN` and `IN()`
+## EXP-01 Combine multiple boolean conditions with `BETWEEN` and `IN()`
 
 Use `BETWEEN` instead of combining multiple `AND` conditions to express a range. Use `IN()` instead of chaining `OR` clauses to match against a set of values. Both make the intent clearer and are easier to scan.
 
-##### Example
+### Example
 
 Bad:
+
 ```sql
 SELECT
     *
@@ -22,6 +23,7 @@ WHERE
 ```
 
 Good:
+
 ```sql
 SELECT
     *
@@ -31,19 +33,20 @@ WHERE
     AND status IN ('shipped', 'pending', 'returned')
 ```
 
-#### Source breakdown
+### Source breakdown
 
- - **For (1)**: Holywell.
- - **Against (0)**
- - **Not mentioned (8)**: Celko, PostgreSQL, PG.ai, Mozilla, Brooklyn, GitLab, Mazur, Supabase.
+- **For (1)**: Holywell.
+- **Against (0)**
+- **Not mentioned (8)**: Celko, PostgreSQL, PG.ai, Mozilla, Brooklyn, GitLab, Mazur, Supabase.
 
-## Use `CASE` for conditional logic
+## EXP-02 Use `CASE` for conditional logic
 
 Use `CASE` expressions for inline conditional logic. When the same expression is compared against multiple values, use the simple `CASE <expression> WHEN <value>` form rather than repeating the expression in every `WHEN` branch.
 
-##### Example
+### Example
 
 Bad:
+
 ```sql
 SELECT
     full_name,
@@ -57,6 +60,7 @@ FROM assessments
 ```
 
 Good:
+
 ```sql
 SELECT
     full_name,
@@ -69,19 +73,20 @@ SELECT
 FROM assessments
 ```
 
-#### Source breakdown
+### Source breakdown
 
- - **For (3)**: Holywell, Celko, GitLab.
- - **Against (0)**
- - **Not mentioned (6)**: PostgreSQL, PG.ai, Mozilla, Brooklyn, Mazur, Supabase.
+- **For (3)**: Holywell, Celko, GitLab.
+- **Against (0)**
+- **Not mentioned (6)**: PostgreSQL, PG.ai, Mozilla, Brooklyn, Mazur, Supabase.
 
-## Be explicit in boolean conditions
+## EXP-03 Be explicit in boolean conditions
 
 Write boolean comparisons using `IS true` and `IS false` rather than relying on implicit boolean evaluation. Why use `IS` instead of `=`? Unlike `= true`, the `IS` form always returns a definite boolean, never propagating `NULL`. When the column is `NULL`, `column = true` evaluates to `NULL` (which SQL treats as falsy), while `column IS true` evaluates to `FALSE`. This distinction matters: `= true` and `IS true` behave the same in a `WHERE` clause, but `IS true` makes the null behaviour explicit and works correctly in `CASE` expressions and derived columns where a `NULL` result would otherwise silently propagate.
 
-##### Example
+### Example
 
 Bad:
+
 ```sql
 SELECT
     *
@@ -92,6 +97,7 @@ WHERE
 ```
 
 Good:
+
 ```sql
 SELECT
     *
@@ -101,19 +107,20 @@ WHERE
     AND is_premium IS false
 ```
 
-#### Source breakdown
+### Source breakdown
 
- - **For (1)**: Mazur.
- - **Against (0)**
- - **Not mentioned (8)**: Holywell, Celko, PostgreSQL, PG.ai, Mozilla, Brooklyn, GitLab, Supabase.
+- **For (1)**: Mazur.
+- **Against (0)**
+- **Not mentioned (8)**: Holywell, Celko, PostgreSQL, PG.ai, Mozilla, Brooklyn, GitLab, Supabase.
 
-## Use `!=` instead of `<>`
+## EXP-04 Use `!=` instead of `<>`
 
 Prefer `!=` over `<>` for the not-equal operator. Both are valid SQL, but `!=` is more common in other programming languages and reads more naturally as "not equal".
 
-##### Example
+### Example
 
 Bad:
+
 ```sql
 SELECT
     *
@@ -124,6 +131,7 @@ WHERE
 ```
 
 Good:
+
 ```sql
 SELECT
     *
@@ -133,21 +141,22 @@ WHERE
     AND status != 'cancelled'
 ```
 
-#### Source breakdown
+### Source breakdown
 
- - **For (3)**: Brooklyn, GitLab, Mazur.
- - **Against (0)**
- - **Not mentioned (6)**: Holywell, Celko, PostgreSQL, PG.ai, Mozilla, Supabase.
+- **For (3)**: Brooklyn, GitLab, Mazur.
+- **Against (0)**
+- **Not mentioned (6)**: Holywell, Celko, PostgreSQL, PG.ai, Mozilla, Supabase.
 
-## Avoid redundant parentheses
+## EXP-05 Avoid redundant parentheses
 
 Do not add parentheses around expressions that do not require them. Extra parentheses suggest a precedence concern where there is none, and add visual noise that makes expressions harder to read.
 
-The only exception is grouping an expression that is too long for one line and has to span several (see [Keep lines under 120 characters](layout.md#keep-lines-under-120-characters)).
+The only exception is grouping an expression that is too long for one line and has to span several (see [LAY-16 Keep lines under 120 characters](layout.md#lay-16-keep-lines-under-120-characters)).
 
-##### Example
+### Example
 
 Bad:
+
 ```sql
 SELECT
     *
@@ -159,6 +168,7 @@ WHERE
 ```
 
 Good:
+
 ```sql
 SELECT
     *
@@ -169,8 +179,8 @@ WHERE
     AND category_id IN (3, 7)
 ```
 
-#### Source breakdown
+### Source breakdown
 
- - **For (1)**: Celko.
- - **Against (0)**
- - **Not mentioned (8)**: Holywell, PostgreSQL, PG.ai, Mozilla, Brooklyn, GitLab, Mazur, Supabase.
+- **For (1)**: Celko.
+- **Against (0)**
+- **Not mentioned (8)**: Holywell, PostgreSQL, PG.ai, Mozilla, Brooklyn, GitLab, Mazur, Supabase.

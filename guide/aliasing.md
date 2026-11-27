@@ -1,12 +1,13 @@
 # Aliasing and references
 
-## Always use the `AS` keyword explicitly
+## ALI-01 Always use the `AS` keyword explicitly
 
 Never omit the keyword when aliasing, as it provides readability.
 
-##### Example
+### Example
 
 Bad:
+
 ```sql
 SELECT
     customers.full_name                   customer_name,
@@ -18,6 +19,7 @@ GROUP BY customers.full_name
 ```
 
 Good:
+
 ```sql
 SELECT
     customers.full_name                   AS customer_name,
@@ -28,19 +30,20 @@ LEFT JOIN archived_transactions AS transactions
 GROUP BY customers.full_name
 ```
 
-#### Source breakdown
+### Source breakdown
 
- - **For (9)**: Holywell, Celko, Supabase, Brooklyn, GitLab, Mozilla, Mazur, PG.ai, PostgreSQL.
- - **Against (0)**
- - **Not mentioned (0)**
+- **For (9)**: Holywell, Celko, Supabase, Brooklyn, GitLab, Mozilla, Mazur, PG.ai, PostgreSQL.
+- **Against (0)**
+- **Not mentioned (0)**
 
-## Always use aliasing for aggregated and other column expression
+## ALI-02 Always use aliasing for aggregated and other column expression
 
 Always use an alias name for columns that are the result of aggregation, `CASE` statements, `sum()`, `count()`, ... Otherwise, depending of the database provider, the name could be inherited from the column used in the transformation or the function name.
 
-##### Example
+### Example
 
 Bad:
+
 ```sql
 SELECT
     team_name,
@@ -51,6 +54,7 @@ GROUP BY team_name
 ```
 
 Good:
+
 ```sql
 SELECT
     team_name,
@@ -60,13 +64,13 @@ FROM matches
 GROUP BY team_name
 ```
 
-#### Source breakdown
+### Source breakdown
 
- - **For (4)**: Holywell, Celko, Brooklyn, Mazur.
- - **Against (0)**
- - **Not mentioned (5)**: GitLab, Mozilla, Supabase, PG.ai, PostgreSQL.
+- **For (4)**: Holywell, Celko, Brooklyn, Mazur.
+- **Against (0)**
+- **Not mentioned (5)**: GitLab, Mozilla, Supabase, PG.ai, PostgreSQL.
 
-## Aim for clarity in table aliasing
+## ALI-03 Aim for clarity in table aliasing
 
 Prefer using the full table name over an alias when the name is short enough to be readable. When aliasing is unavoidable (long or ambiguous names, self-joins), use a meaningful alias rather than an abbreviation or the initials of the table words (`schools`, not `s`; `districts`, not `sda`).
 
@@ -74,9 +78,10 @@ In a long query, an abbreviation forces the reader to scroll back to the `FROM` 
 
 Never use generic aliases that convey no meaning, such as `x` or `t1`.
 
-##### Example
+### Example
 
 Bad:
+
 ```sql
 SELECT
     s.name    AS school_name,
@@ -88,6 +93,7 @@ INNER JOIN school_district_areas AS sda
 ```
 
 Good:
+
 ```sql
 SELECT
     schools.name    AS school_name,
@@ -98,19 +104,20 @@ INNER JOIN school_district_areas AS districts
     ON schools.district_code = districts.code
 ```
 
-#### Source breakdown
+### Source breakdown
 
- - **For (3)**: Brooklyn, Mazur, GitLab.
- - **Against (2)**: Holywell, PostgreSQL.
- - **Not mentioned (4)**: Celko, Mozilla, Supabase, PG.ai.
+- **For (3)**: Brooklyn, Mazur, GitLab.
+- **Against (2)**: Holywell, PostgreSQL.
+- **Not mentioned (4)**: Celko, Mozilla, Supabase, PG.ai.
 
-## Column aliases should semantically relate to what they represent
+## ALI-04 Column aliases should semantically relate to what they represent
 
 Aliases should relate in some way to the object or expression they are aliasing. If they are computed values, they should reflect the transformation applied, and should reference the source that is being selected. Basically, a column alias should follow the same naming rules as declared column names in tables.
 
-##### Example
+### Example
 
 Bad:
+
 ```sql
 SELECT
     team_name,
@@ -121,6 +128,7 @@ GROUP BY team_name
 ```
 
 Good:
+
 ```sql
 SELECT
     team_name,
@@ -130,19 +138,20 @@ FROM matches
 GROUP BY team_name
 ```
 
-#### Source breakdown
+### Source breakdown
 
- - **For (7)**: Brooklyn, Mazur, GitLab, Supabase, Celko, Holywell, PG.ai.
- - **Against (0)**
- - **Not mentioned (2)**: Mozilla, PostgreSQL.
+- **For (7)**: Brooklyn, Mazur, GitLab, Supabase, Celko, Holywell, PG.ai.
+- **Against (0)**
+- **Not mentioned (2)**: Mozilla, PostgreSQL.
 
-## Always qualify column references in queries with `JOIN`
+## ALI-05 Always qualify column references in queries with `JOIN`
 
 In queries with multiple tables, always qualify every column reference with its table name or alias. This improves the clarity and readability of the query, as you are able to tell at a glance where each column comes from.
 
-##### Example
+### Example
 
 Bad:
+
 ```sql
 SELECT
     full_name,
@@ -155,6 +164,7 @@ INNER JOIN bookings
 ```
 
 Good:
+
 ```sql
 SELECT
     guests.full_name,
@@ -166,19 +176,20 @@ INNER JOIN bookings
     ON guests.id = bookings.guest_id
 ```
 
-#### Source breakdown
+### Source breakdown
 
- - **For (4)**: Brooklyn, Mazur, GitLab, Holywell.
- - **Against (0)**
- - **Not mentioned (5)**: Mozilla, PostgreSQL, Supabase, Celko, PG.ai.
+- **For (4)**: Brooklyn, Mazur, GitLab, Holywell.
+- **Against (0)**
+- **Not mentioned (5)**: Mozilla, PostgreSQL, Supabase, Celko, PG.ai.
 
-## Omit table references for single-table queries
+## ALI-06 Omit table references for single-table queries
 
 In single-table queries, omit the table prefix from column references as they do not provide any meaningful context while increasing the verbosity of the query.
 
-##### Example
+### Example
 
 Bad:
+
 ```sql
 SELECT
     schools.address,
@@ -189,6 +200,7 @@ WHERE
 ```
 
 Good:
+
 ```sql
 SELECT
     address,
@@ -198,8 +210,8 @@ WHERE
     cohort > 2024
 ```
 
-#### Source breakdown
+### Source breakdown
 
- - **For (2)**: Brooklyn, Mazur.
- - **Against (0)**
- - **Not mentioned (7)**: Mozilla, PostgreSQL, Supabase, Celko, PG.ai, GitLab, Holywell.
+- **For (2)**: Brooklyn, Mazur.
+- **Against (0)**
+- **Not mentioned (7)**: Mozilla, PostgreSQL, Supabase, Celko, PG.ai, GitLab, Holywell.

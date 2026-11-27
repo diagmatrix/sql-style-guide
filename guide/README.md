@@ -6,16 +6,18 @@ Most of the rules come from other SQL style guides, where a decision has been ma
 
 ## Rules structure
 
- 1. [Layout](layout.md)
- 2. [Keywords and functions](keywords.md)
- 3. [Naming](naming.md)
- 4. [Aliasing and references](aliasing.md)
- 5. [Comments](comments.md)
- 6. [Data types and literals](data-types.md)
- 7. [Expressions and conditions](expressions.md)
- 8. [Query structure](structure.md)
- 9. [Clauses](clauses.md)
- 10. [Schema objects](schema.md)
+Every rule has a stable code made of its group prefix and a number (for example `LAY-03`). Codes are never reused: when a rule is removed, its code is retired.
+
+ 1. [Layout](layout.md) (`LAY`)
+ 2. [Keywords and functions](keywords.md) (`KWD`)
+ 3. [Naming](naming.md) (`NAM`)
+ 4. [Aliasing and references](aliasing.md) (`ALI`)
+ 5. [Comments](comments.md) (`CMT`)
+ 6. [Data types and literals](data-types.md) (`TYP`)
+ 7. [Expressions and conditions](expressions.md) (`EXP`)
+ 8. [Query structure](structure.md) (`STR`)
+ 9. [Clauses](clauses.md) (`CLS`)
+ 10. [Schema objects](schema.md) (`DDL`)
 
 ## Sources
 
