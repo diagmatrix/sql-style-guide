@@ -44,12 +44,6 @@ WHERE
     status = 'active'
 ```
 
-### Source breakdown
-
-- **For (4)**: Holywell, Celko, Brooklyn, GitLab.
-- **Against (0)**
-- **Not mentioned (5)**: PostgreSQL, PG.ai, Mozilla, Mazur, Supabase.
-
 ## CLS-02 Use `SELECT DISTINCT` instead of `GROUP BY` on all columns when deduplicating
 
 When the goal is to remove duplicate rows rather than aggregate, use
@@ -77,13 +71,6 @@ SELECT
     product_id
 FROM orders
 ```
-
-### Source breakdown
-
-- **For (1)**: Brooklyn.
-- **Against (0)**
-- **Not mentioned (8)**: Holywell, Celko, PostgreSQL, PG.ai, Mozilla, GitLab,
-  Mazur, Supabase.
 
 ## CLS-03 Avoid `ORDER BY` unless necessary to produce the correct result
 
@@ -114,13 +101,6 @@ SELECT
 FROM tickets
 GROUP BY agent_id
 ```
-
-### Source breakdown
-
-- **For (1)**: Brooklyn.
-- **Against (0)**
-- **Not mentioned (8)**: Holywell, Celko, PostgreSQL, PG.ai, Mozilla, GitLab,
-  Mazur, Supabase.
 
 ## CLS-04 Always use explicit column names in `GROUP BY`
 
@@ -157,13 +137,6 @@ FROM students
 GROUP BY school_id, cohort
 ```
 
-### Source breakdown
-
-- **For explicit names (2)**: PG.ai, Mozilla.
-- **Positional acceptable for complex expressions (4)**: PG.ai, Mozilla,
-  Brooklyn, Mazur.
-- **Not mentioned (5)**: Holywell, Celko, GitLab, Supabase.
-
 ## CLS-05 Prefer `WHERE` over `HAVING` when either would suffice
 
 `WHERE` filters rows before aggregation; `HAVING` filters after. When a
@@ -196,13 +169,6 @@ WHERE
     agency_id IS NOT NULL
 GROUP BY agency_id
 ```
-
-### Source breakdown
-
-- **For (2)**: Brooklyn, GitLab.
-- **Against (0)**
-- **Not mentioned (7)**: Holywell, Celko, PostgreSQL, PG.ai, Mozilla, Mazur,
-  Supabase.
 
 ## CLS-06 Use lateral column aliasing when grouping by name
 
@@ -237,13 +203,6 @@ FROM sales
 GROUP BY sale_year
 ```
 
-### Source breakdown
-
-- **For (1)**: Mazur.
-- **Against (0)**
-- **Not mentioned (8)**: Holywell, Celko, PostgreSQL, PG.ai, Mozilla, Brooklyn,
-  GitLab, Supabase.
-
 ## CLS-07 Place non-aggregated columns first in `SELECT`, aggregated columns last
 
 In a query with aggregation, list the grouping (non-aggregated) columns first,
@@ -275,10 +234,3 @@ SELECT
 FROM students
 GROUP BY school_id, cohort
 ```
-
-### Source breakdown
-
-- **For (2)**: GitLab, Mazur.
-- **Against (0)**
-- **Not mentioned (7)**: Holywell, Celko, PostgreSQL, PG.ai, Mozilla, Brooklyn,
-  Supabase.

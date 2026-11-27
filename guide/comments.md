@@ -55,13 +55,6 @@ WHERE
     -- AND users.country_code IS NOT NULL
 ```
 
-### Source breakdown
-
-- **For `/* */` multi-line + `--` single-line (6)**: Holywell, Celko,
-  PostgreSQL, PG.ai, GitLab, Supabase.
-- **For `/* */` exclusively (1)**: Brooklyn.
-- **Not mentioned (2)**: Mozilla, Mazur.
-
 ## CMT-02 Comment only where necessary
 
 Add comments where the intent or logic is not self-evident. Do not comment every
@@ -105,13 +98,6 @@ FROM products
 WHERE
     country_code = 'ES'
 ```
-
-### Source breakdown
-
-- **For (2)**: Holywell, Celko.
-- **Against (0)**
-- **Not mentioned (7)**: PostgreSQL, PG.ai, Mozilla, Brooklyn, GitLab, Mazur,
-  Supabase.
 
 ## CMT-03 Comment CTEs with confusing or notable logic
 
@@ -172,9 +158,3 @@ SELECT
     *
 FROM eligible_students
 ```
-
-### Source breakdown
-
-- **For (3)**: Brooklyn, GitLab, Supabase.
-- **Against (0)**
-- **Not mentioned (6)**: Holywell, Celko, PostgreSQL, PG.ai, Mozilla, Mazur.

@@ -52,12 +52,6 @@ WHERE
     total_orders > 3
 ```
 
-### Source breakdown
-
-- **For (7)**: Celko, PG.ai, Mozilla, Brooklyn, GitLab, Mazur, Supabase.
-- **Against (0)**
-- **Not mentioned (2)**: Holywell, PostgreSQL.
-
 ## STR-02 Avoid correlated subqueries
 
 A correlated subquery references a column from the outer query, causing it to
@@ -99,13 +93,6 @@ FROM artists
 INNER JOIN track_counts
     ON artists.id = track_counts.artist_id
 ```
-
-### Source breakdown
-
-- **For (2)**: Celko, PG.ai.
-- **Against (0)**
-- **Not mentioned (7)**: Holywell, PostgreSQL, Mozilla, Brooklyn, GitLab, Mazur,
-  Supabase.
 
 ## STR-03 Each CTE should do one logical unit of work
 
@@ -177,12 +164,6 @@ SELECT
 FROM student_scores
 ```
 
-### Source breakdown
-
-- **For (3)**: Brooklyn, GitLab, Supabase.
-- **Against (0)**
-- **Not mentioned (6)**: Holywell, Celko, PostgreSQL, PG.ai, Mozilla, Mazur.
-
 ## STR-04 Use `ON` for all join conditions; avoid `USING`
 
 Always express join conditions with `ON`, even when the joining columns share
@@ -212,12 +193,6 @@ FROM customers
 INNER JOIN orders
     ON customers.id = orders.customer_id
 ```
-
-### Source breakdown
-
-- **For (2)**: Brooklyn, GitLab.
-- **Against  (1)**: PostgreSQL.
-- **Not mentioned (6)**: Holywell, Celko, PG.ai, Mozilla, Mazur, Supabase.
 
 ## STR-05 Put the first-referenced table immediately after `ON`
 
@@ -249,13 +224,6 @@ FROM doctors
 INNER JOIN appointments
     ON doctors.id = appointments.doctor_id
 ```
-
-### Source breakdown
-
-- **For (2)**: Brooklyn, Mazur.
-- **Against (0)**
-- **Not mentioned (7)**: Holywell, Celko, PostgreSQL, PG.ai, Mozilla, GitLab,
-  Supabase.
 
 ## STR-06 For `INNER JOIN`, keep filter conditions in `WHERE`, not in the `JOIN` clause
 
@@ -295,10 +263,3 @@ WHERE
     drivers.is_active IS true
     AND deliveries.delivered_at IS NOT NULL
 ```
-
-### Source breakdown
-
-- **For (1)**: Brooklyn.
-- **Against (0)**
-- **Not mentioned (8)**: Holywell, Celko, PostgreSQL, PG.ai, Mozilla, GitLab,
-  Mazur, Supabase.

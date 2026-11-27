@@ -29,12 +29,6 @@ WHERE
     cohort > 2024
 ```
 
-### Source breakdown
-
-- **For (5)**: Holywell, Celko, PostgreSQL, Mozilla, GitLab.
-- **Against (4)**: PG.ai, Brooklyn, Mazur, Supabase.
-- **Not mentioned (0)**
-
 ## KWD-02 Full keyword forms for reserved words
 
 Always use the full keyword forms instead of the abbreviation.
@@ -65,13 +59,6 @@ WHERE
     employees.hire_year > 2020
 ```
 
-### Source breakdown
-
-- **For (2)**: Holywell, Celko.
-- **Against (0)**
-- **Not mentioned (7)**: PostgreSQL, Mozilla, GitLab, PG.ai, Brooklyn, Mazur,
-  Supabase.
-
 ## KWD-03 Avoid vendor-specific keywords
 
 If an ANSI SQL keyword exists for a function or procedure, use it instead of a
@@ -98,13 +85,6 @@ SELECT
     extract(YEAR FROM hired_at) AS hire_year
 FROM employees
 ```
-
-### Source breakdown
-
-- **For (2)**: Holywell, Celko.
-- **Against (0)**
-- **Not mentioned (7)**: PostgreSQL, Mozilla, GitLab, PG.ai, Brooklyn, Mazur,
-  Supabase.
 
 ## KWD-04 Use lowercase for functions
 
@@ -146,12 +126,6 @@ FROM shipments
 GROUP BY warehouse_id
 ```
 
-### Source breakdown
-
-- **For (5)**: PG.ai, Brooklyn, Mazur, Supabase, Mozilla.
-- **Against (3)**: GitLab, Holywell, Celko.
-- **Not mentioned (1)**: PostgreSQL.
-
 ## KWD-05 Use uppercase for data types
 
 Data types are written in **UPPERCASE**, the same as reserved words, both in
@@ -185,9 +159,3 @@ CREATE TABLE users (
     is_active  BOOLEAN      NOT NULL
 )
 ```
-
-### Source breakdown
-
-- **For (3)**: GitLab, Holywell, Celko.
-- **Against (5)**: PG.ai, Brooklyn, Mazur, Supabase, PostgreSQL.
-- **Not mentioned (1)**: Mozilla.

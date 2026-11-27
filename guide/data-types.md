@@ -38,13 +38,6 @@ CREATE TABLE invoices (
 );
 ```
 
-### Source breakdown
-
-- **For (2)**: Holywell, Celko.
-- **Against (0)**
-- **Not mentioned (7)**: PostgreSQL, PG.ai, Mozilla, Brooklyn, GitLab, Mazur,
-  Supabase.
-
 ## TYP-02 Prefer `BOOLEAN` for logical values: use `true`/`false` instead of `1`/`0`
 
 Use the `BOOLEAN` type for columns that represent a true/false state. Store and
@@ -77,13 +70,6 @@ WHERE
     is_active IS true
     AND is_verified IS false
 ```
-
-### Source breakdown
-
-- **For (1)**: GitLab.
-- **Against (0)**
-- **Not mentioned (8)**: Holywell, Celko, PostgreSQL, PG.ai, Mozilla, Brooklyn,
-  Mazur, Supabase.
 
 ## TYP-03 Default values should match the column type
 
@@ -119,13 +105,6 @@ CREATE TABLE bookings (
 );
 ```
 
-### Source breakdown
-
-- **For (2)**: Holywell, Celko.
-- **Against (0)**
-- **Not mentioned (7)**: PostgreSQL, PG.ai, Mozilla, Brooklyn, GitLab, Mazur,
-  Supabase.
-
 ## TYP-04 Use ISO 8601 format for date/time values and ISO temporal syntax in queries
 
 Store dates and times using ISO 8601 format: `YYYY-MM-DDTHH:MM:SS.SSSSS`. Use
@@ -155,9 +134,3 @@ WHERE
     departed_at > DATE '2024-09-01'
     AND arrived_at < TIMESTAMP '2025-07-31T23:59:59'
 ```
-
-### Source breakdown
-
-- **For (4)**: Holywell, Celko, PG.ai, Supabase.
-- **Against (0)**
-- **Not mentioned (5)**: PostgreSQL, Mozilla, Brooklyn, GitLab, Mazur.

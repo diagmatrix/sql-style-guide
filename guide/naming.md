@@ -33,13 +33,6 @@ SELECT
 FROM employees
 ```
 
-### Source breakdown
-
-- **For (9)**: Holywell, Celko, PostgreSQL, PG.ai, Mozilla, Brooklyn, GitLab,
-  Mazur, Supabase.
-- **Against (0)**
-- **Not mentioned (0)**
-
 ## NAM-02 Names must be descriptive, consistent and unambiguous
 
 Use descriptive names and consistent across tables (for example, `cohort` should
@@ -96,40 +89,6 @@ INNER JOIN courses
     ON enrolments.course_id = courses.id
 ```
 
-### Source breakdown
-
-Regarding descriptive names:
-
-- **For (4)**: Holywell, Celko, Mozilla, Supabase.
-- **Against (0)**
-- **Not mentioned (5)**: PostgreSQL, PG.ai, Brooklyn, GitLab, Mazur.
-
-Regarding consistent naming across tables:
-
-- **For (1)**: Celko.
-- **Against (0)**
-- **Not mentioned (8)**: PostgreSQL, PG.ai, Brooklyn, GitLab, Mazur, Mozilla,
-  Supabase, Holywell.
-
-Regarding not using descriptive prefixes:
-
-- **For (3)**: Holywell, Celko, Supabase.
-- **Against (1)**: PG.ai.
-- **Not mentioned (5)**: PostgreSQL, Brooklyn, Mazur, Mozilla, GitLab.
-
-Regarding avoiding abbreviations:
-
-- **For (2)**: Holywell, Celko.
-- **Against (0)**
-- **Not mentioned (7)**: PostgreSQL, PG.ai, Brooklyn, GitLab, Mazur, Mozilla,
-  Supabase.
-
-Regarding no vague identifiers:
-
-- **For (3)**: Holywell, Celko, GitLab.
-- **Against (1)**: PG.ai.
-- **Not mentioned (5)**: PostgreSQL, Brooklyn, Mazur, Mozilla, Supabase.
-
 ## NAM-03 Use unquoted alphanumeric names
 
 Use only lowercase alphanumeric characters for names separated by underscores,
@@ -167,27 +126,6 @@ CREATE TABLE enrolments (
 )
 ```
 
-### Source breakdown
-
-Regarding the use of only alphanumeric characters, starting with a letter:
-
-- **For (4)**: Holywell, Celko, PG.ai, Mozilla.
-- **Against (0)**
-- **Not mentioned (5)**: PostgreSQL, Brooklyn, GitLab, Mazur, Supabase.
-
-Regarding no consecutive underscores:
-
-- **For (2)**: Holywell, Celko.
-- **Against (0)**
-- **Not mentioned (7)**: PostgreSQL, PG.ai, Brooklyn, GitLab, Mazur, Mozilla,
-  Supabase.
-
-Regarding quoted identifiers:
-
-- **For (3)**: Holywell, Celko, GitLab.
-- **Against (0)**
-- **Not mentioned (6)**: PostgreSQL, PG.ai, Brooklyn, Mazur, Mozilla, Supabase.
-
 ## NAM-04 Do not use reserved words as identifiers
 
 Never use words such as `sum`, `count`, ... It will have to be quoted everywhere
@@ -221,12 +159,6 @@ CREATE TABLE employees (
 CREATE TABLE merges (...)
 ```
 
-### Source breakdown
-
-- **For (3)**: Brooklyn, GitLab, Supabase.
-- **Against (0)**
-- **Not mentioned (6)**: Holywell, Celko, PostgreSQL, PG.ai, Mozilla, Mazur.
-
 ## NAM-05 Use collective, class or plural nouns for tables
 
 The core reasoning behind this rule is that tables hold many rows, and each row
@@ -254,12 +186,6 @@ CREATE TABLE troupe (...);
 CREATE TABLE courses (...);
 ```
 
-### Source breakdown
-
-- **For (4)**: Holywell, Celko, Mazur, Supabase.
-- **Against (1)**: PG.ai.
-- **Not mentioned (4)**: Brooklyn, GitLab, PostgreSQL, Mozilla.
-
 ## NAM-06 Avoid concatenating names for relationship tables
 
 Avoid using concatenated names for relationship tables, preferring a common
@@ -281,13 +207,6 @@ Good:
 CREATE TABLE enrolments (...);
 CREATE TABLE castings (...);
 ```
-
-### Source breakdown
-
-- **For (2)**: Holywell, Celko.
-- **Against (0)**
-- **Not mentioned (7)**: Brooklyn, GitLab, PostgreSQL, Mozilla, Mazur, Supabase,
-  PG.ai.
 
 ## NAM-07 Use singular names for columns
 
@@ -316,12 +235,6 @@ CREATE TABLE players (
     goal_count INTEGER
 )
 ```
-
-### Source breakdown
-
-- **For (4)**: Holywell, Celko, Supabase, PostgreSQL.
-- **Against (0)**
-- **Not mentioned (5)**: Brooklyn, GitLab, Mozilla, Mazur, PG.ai.
 
 ## NAM-08 Use standardised prefixes and suffixes
 
@@ -371,20 +284,6 @@ SELECT
 FROM patients
 ```
 
-### Source breakdown
-
-Regarding general standardised suffixes and prefixes:
-
-- **For (5)**: Holywell, Celko, Brooklyn, GitLab, Mazur.
-- **Against (0)**
-- **Not mentioned (4)**: PostgreSQL, Mozilla, PG.ai, Supabase.
-
-Regarding bare `id` primary keys with `_id` foreign keys:
-
-- **For (2)**: Brooklyn, Supabase.
-- **Against (2)**: Holywell, Celko (they avoid bare `id` columns).
-- **Not mentioned (5)**: PostgreSQL, Mozilla, PG.ai, GitLab, Mazur.
-
 ## NAM-09 Do not use the table name as a column name or prefix
 
 Do not duplicate the table name in column name. This means two different things:
@@ -416,12 +315,6 @@ CREATE TABLE grades (
     letter VARCHAR(1)
 )
 ```
-
-### Source breakdown
-
-- **For (3)**: Holywell, Celko, Supabase.
-- **Against (0)**
-- **Not mentioned (6)**: Brooklyn, GitLab, Mozilla, Mazur, PG.ai, PostgreSQL.
 
 ## NAM-10 CTE and subquery names should be descriptive
 
@@ -502,13 +395,6 @@ INNER JOIN (
     ON students.id = student_course_counts.student_id
 ```
 
-### Source breakdown
-
-- **For descriptive (1)**: Brooklyn.
-- **For concise but clear (1)**: GitLab.
-- **Not mentioned (7)**: Holywell, Celko, PostgreSQL, PG.ai, Mozilla, Mazur,
-  Supabase.
-
 ## NAM-11 Do not prefix or suffix CTE names with `cte`
 
 Avoid names like `cte_open_tickets` or `open_tickets_cte`. The `WITH` keyword
@@ -550,10 +436,3 @@ SELECT
     *
 FROM open_tickets
 ```
-
-### Source breakdown
-
-- **For (1)**: Brooklyn.
-- **Against (0)**
-- **Not mentioned (8)**: Holywell, Celko, PostgreSQL, PG.ai, Mozilla, GitLab,
-  Mazur, Supabase.
