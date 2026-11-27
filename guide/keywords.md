@@ -1,12 +1,13 @@
 # Keywords and functions
 
-## Use uppercase for reserved words
+## KWD-01 Use uppercase for reserved words
 
 Always use **UPPERCASE** for reserved words (`SELECT`, `WHERE`, `AS`, ...). This differentiates the SQL logic from the tables and columns used in the queries and table definitions.
 
-##### Example
+### Example
 
 Bad:
+
 ```sql
 select
     address,
@@ -16,6 +17,7 @@ where cohort > 2024
 ```
 
 Good:
+
 ```sql
 SELECT
     address,
@@ -25,19 +27,20 @@ WHERE
     cohort > 2024
 ```
 
-#### Source breakdown
+### Source breakdown
 
- - **For (5)**: Holywell, Celko, PostgreSQL, Mozilla, GitLab.
- - **Against (4)**: PG.ai, Brooklyn, Mazur, Supabase.
- - **Not mentioned (0)**
+- **For (5)**: Holywell, Celko, PostgreSQL, Mozilla, GitLab.
+- **Against (4)**: PG.ai, Brooklyn, Mazur, Supabase.
+- **Not mentioned (0)**
 
-## Full keyword forms for reserved words
+## KWD-02 Full keyword forms for reserved words
 
 Always use the full keyword forms instead of the abbreviation.
 
-##### Example
+### Example
 
 Bad:
+
 ```sql
 SELECT
     *
@@ -49,6 +52,7 @@ WHERE
 ```
 
 Good:
+
 ```sql
 SELECT
     *
@@ -59,19 +63,20 @@ WHERE
     employees.hire_year > 2020
 ```
 
-#### Source breakdown
+### Source breakdown
 
- - **For (2)**: Holywell, Celko.
- - **Against (0)**
- - **Not mentioned (7)**: PostgreSQL, Mozilla, GitLab, PG.ai, Brooklyn, Mazur, Supabase.
+- **For (2)**: Holywell, Celko.
+- **Against (0)**
+- **Not mentioned (7)**: PostgreSQL, Mozilla, GitLab, PG.ai, Brooklyn, Mazur, Supabase.
 
-## Avoid vendor-specific keywords
+## KWD-03 Avoid vendor-specific keywords
 
-If an ANSI SQL keyword exists for a function or procedure, use it instead of a vendor-specific one. 
+If an ANSI SQL keyword exists for a function or procedure, use it instead of a vendor-specific one.
 
-##### Example
+### Example
 
 Bad:
+
 ```sql
 SELECT
     full_name,
@@ -81,6 +86,7 @@ FROM employees
 ```
 
 Good:
+
 ```sql
 SELECT
     full_name,
@@ -89,13 +95,13 @@ SELECT
 FROM employees
 ```
 
-#### Source breakdown
+### Source breakdown
 
- - **For (2)**: Holywell, Celko.
- - **Against (0)**
- - **Not mentioned (7)**: PostgreSQL, Mozilla, GitLab, PG.ai, Brooklyn, Mazur, Supabase.
+- **For (2)**: Holywell, Celko.
+- **Against (0)**
+- **Not mentioned (7)**: PostgreSQL, Mozilla, GitLab, PG.ai, Brooklyn, Mazur, Supabase.
 
-## Use lowercase for functions
+## KWD-04 Use lowercase for functions
 
 Treat functions as identifiers and always write them in **lowercase**: `count()` instead of `COUNT()`.
 
@@ -103,9 +109,10 @@ Mixing cases is common: single-word functions tend to be written in uppercase (`
 
 It also keeps uppercase meaningful. The [Bouma](https://en.wikipedia.org/wiki/Bouma) (the outline shape) of an uppercase word is a rectangle, which makes it stand out from regular words. Reserving uppercase for reserved words keeps the structure of the query easy to see; using it for functions too dilutes that.
 
-##### Example
+### Example
 
 Bad:
+
 ```sql
 SELECT
     warehouse_id,
@@ -116,6 +123,7 @@ GROUP BY warehouse_id
 ```
 
 Good:
+
 ```sql
 SELECT
     warehouse_id,
@@ -125,21 +133,22 @@ FROM shipments
 GROUP BY warehouse_id
 ```
 
-#### Source breakdown
+### Source breakdown
 
- - **For (5)**: PG.ai, Brooklyn, Mazur, Supabase, Mozilla.
- - **Against (3)**: GitLab, Holywell, Celko.
- - **Not mentioned (1)**: PostgreSQL.
+- **For (5)**: PG.ai, Brooklyn, Mazur, Supabase, Mozilla.
+- **Against (3)**: GitLab, Holywell, Celko.
+- **Not mentioned (1)**: PostgreSQL.
 
-## Use uppercase for data types
+## KWD-05 Use uppercase for data types
 
 Data types are written in **UPPERCASE**, the same as reserved words, both in table definitions and in type casts. Mixing cases makes definitions inconsistent, so pick one and stick to it.
 
 User-defined types (enums, domains, composite types) are identifiers rather than reserved words, so they follow the naming rules instead: lowercase, with underscores.
 
-##### Example
+### Example
 
 Bad:
+
 ```sql
 CREATE TABLE users (
     id         integer      PRIMARY KEY,
@@ -150,6 +159,7 @@ CREATE TABLE users (
 ```
 
 Good:
+
 ```sql
 CREATE TABLE users (
     id         INTEGER      PRIMARY KEY,
@@ -159,8 +169,8 @@ CREATE TABLE users (
 )
 ```
 
-#### Source breakdown
+### Source breakdown
 
- - **For (3)**: GitLab, Holywell, Celko.
- - **Against (5)**: PG.ai, Brooklyn, Mazur, Supabase, PostgreSQL.
- - **Not mentioned (1)**: Mozilla.
+- **For (3)**: GitLab, Holywell, Celko.
+- **Against (5)**: PG.ai, Brooklyn, Mazur, Supabase, PostgreSQL.
+- **Not mentioned (1)**: Mozilla.

@@ -1,12 +1,13 @@
 # Query structure
 
-## Prefer CTEs over nested subqueries
+## STR-01 Prefer CTEs over nested subqueries
 
 When a query requires intermediate results, use a CTE (`WITH`) rather than a nested subquery. CTEs give each step a name, making the query easier to read, test, and debug.
 
-##### Example
+### Example
 
 Bad:
+
 ```sql
 SELECT
     full_name,
@@ -27,6 +28,7 @@ WHERE
 ```
 
 Good:
+
 ```sql
 WITH customer_orders AS (
     SELECT
@@ -48,19 +50,20 @@ WHERE
     total_orders > 3
 ```
 
-#### Source breakdown
+### Source breakdown
 
- - **For (7)**: Celko, PG.ai, Mozilla, Brooklyn, GitLab, Mazur, Supabase.
- - **Against (0)**
- - **Not mentioned (2)**: Holywell, PostgreSQL.
+- **For (7)**: Celko, PG.ai, Mozilla, Brooklyn, GitLab, Mazur, Supabase.
+- **Against (0)**
+- **Not mentioned (2)**: Holywell, PostgreSQL.
 
-## Avoid correlated subqueries
+## STR-02 Avoid correlated subqueries
 
 A correlated subquery references a column from the outer query, causing it to execute once per row. This leads to poor performance and is almost always replaceable with a `JOIN` or a CTE.
 
-##### Example
+### Example
 
 Bad:
+
 ```sql
 SELECT
     full_name,
@@ -75,6 +78,7 @@ FROM artists
 ```
 
 Good:
+
 ```sql
 WITH track_counts AS (
     SELECT
@@ -92,19 +96,20 @@ INNER JOIN track_counts
     ON artists.id = track_counts.artist_id
 ```
 
-#### Source breakdown
+### Source breakdown
 
- - **For (2)**: Celko, PG.ai.
- - **Against (0)**
- - **Not mentioned (7)**: Holywell, PostgreSQL, Mozilla, Brooklyn, GitLab, Mazur, Supabase.
+- **For (2)**: Celko, PG.ai.
+- **Against (0)**
+- **Not mentioned (7)**: Holywell, PostgreSQL, Mozilla, Brooklyn, GitLab, Mazur, Supabase.
 
-## Each CTE should do one logical unit of work
+## STR-03 Each CTE should do one logical unit of work
 
 A CTE should encapsulate a single, well-defined step in the query's logic. Avoid cramming multiple transformations into one CTE. A query made of several simple CTEs is easier to understand and debug than one made of fewer complex ones.
 
-##### Example
+### Example
 
 Bad:
+
 ```sql
 WITH student_data AS (
     SELECT
@@ -128,6 +133,7 @@ FROM student_data
 ```
 
 Good:
+
 ```sql
 WITH active_students AS (
     SELECT
@@ -164,19 +170,20 @@ SELECT
 FROM student_scores
 ```
 
-#### Source breakdown
+### Source breakdown
 
- - **For (3)**: Brooklyn, GitLab, Supabase.
- - **Against (0)**
- - **Not mentioned (6)**: Holywell, Celko, PostgreSQL, PG.ai, Mozilla, Mazur.
+- **For (3)**: Brooklyn, GitLab, Supabase.
+- **Against (0)**
+- **Not mentioned (6)**: Holywell, Celko, PostgreSQL, PG.ai, Mozilla, Mazur.
 
-## Use `ON` for all join conditions; avoid `USING`
+## STR-04 Use `ON` for all join conditions; avoid `USING`
 
 Always express join conditions with `ON`, even when the joining columns share the same name. Avoid `USING`, as it silently merges the columns into one in the result set, which can cause unexpected behaviour when adding aliases or when the query is refactored.
 
-##### Example
+### Example
 
 Bad:
+
 ```sql
 SELECT
     customers.full_name,
@@ -186,6 +193,7 @@ INNER JOIN orders USING (customer_id)
 ```
 
 Good:
+
 ```sql
 SELECT
     customers.full_name,
@@ -195,19 +203,20 @@ INNER JOIN orders
     ON customers.id = orders.customer_id
 ```
 
-#### Source breakdown
+### Source breakdown
 
- - **For (2)**: Brooklyn, GitLab.
- - **Against  (1)**: PostgreSQL.
- - **Not mentioned (6)**: Holywell, Celko, PG.ai, Mozilla, Mazur, Supabase.
+- **For (2)**: Brooklyn, GitLab.
+- **Against  (1)**: PostgreSQL.
+- **Not mentioned (6)**: Holywell, Celko, PG.ai, Mozilla, Mazur, Supabase.
 
-## Put the first-referenced table immediately after `ON`
+## STR-05 Put the first-referenced table immediately after `ON`
 
 In a join condition, write the table that was introduced first (the left-hand table) immediately after the `ON` keyword. This makes fan-out risk visible at a glance: if the left table's key is not on the left side of the condition, a row duplication bug may be hiding.
 
-##### Example
+### Example
 
 Bad:
+
 ```sql
 SELECT
     doctors.full_name,
@@ -218,6 +227,7 @@ INNER JOIN appointments
 ```
 
 Good:
+
 ```sql
 SELECT
     doctors.full_name,
@@ -227,21 +237,22 @@ INNER JOIN appointments
     ON doctors.id = appointments.doctor_id
 ```
 
-#### Source breakdown
+### Source breakdown
 
- - **For (2)**: Brooklyn, Mazur.
- - **Against (0)**
- - **Not mentioned (7)**: Holywell, Celko, PostgreSQL, PG.ai, Mozilla, GitLab, Supabase.
+- **For (2)**: Brooklyn, Mazur.
+- **Against (0)**
+- **Not mentioned (7)**: Holywell, Celko, PostgreSQL, PG.ai, Mozilla, GitLab, Supabase.
 
-## For `INNER JOIN`, keep filter conditions in `WHERE`, not in the `JOIN` clause
+## STR-06 For `INNER JOIN`, keep filter conditions in `WHERE`, not in the `JOIN` clause
 
 The `ON` clause should express only the relationship between tables. Row-level filters belong in `WHERE`. Mixing business logic into `ON` obscures intent, as a reader scanning `ON` expects join conditions, not data filters.
 
 As an important note, this rule applies only to `INNER JOIN`. With `LEFT JOIN`, moving a condition from `ON` to `WHERE` changes the semantics and effectively converts it into an inner join.
 
-##### Example
+### Example
 
 Bad:
+
 ```sql
 SELECT
     drivers.full_name,
@@ -254,6 +265,7 @@ INNER JOIN deliveries
 ```
 
 Good:
+
 ```sql
 SELECT
     drivers.full_name,
@@ -266,8 +278,8 @@ WHERE
     AND deliveries.delivered_at IS NOT NULL
 ```
 
-#### Source breakdown
+### Source breakdown
 
- - **For (1)**: Brooklyn.
- - **Against (0)**
- - **Not mentioned (8)**: Holywell, Celko, PostgreSQL, PG.ai, Mozilla, GitLab, Mazur, Supabase.
+- **For (1)**: Brooklyn.
+- **Against (0)**
+- **Not mentioned (8)**: Holywell, Celko, PostgreSQL, PG.ai, Mozilla, GitLab, Mazur, Supabase.

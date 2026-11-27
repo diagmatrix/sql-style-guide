@@ -2,15 +2,14 @@
 
 These rules apply mostly to names chosen by developers, and may not apply when using replicated data from a source that does not adhere to the rules. In those cases, it is better to keep the original structure for clarity reasons (for example, not renaming columns to use `snake_case` in tables that are replicas of endpoints of APIs that use `camelCase`).
 
-
-
-## Use snake case
+## NAM-01 Use snake case
 
 Always use snake case (lowercase with underscores, like `snake_case`) for naming.
 
-##### Example
+### Example
 
 Bad:
+
 ```sql
 SELECT
     firstName,
@@ -20,6 +19,7 @@ FROM employees
 ```
 
 Good:
+
 ```sql
 SELECT
     first_name,
@@ -28,13 +28,13 @@ SELECT
 FROM employees
 ```
 
-#### Source breakdown
+### Source breakdown
 
- - **For (9)**: Holywell, Celko, PostgreSQL, PG.ai, Mozilla, Brooklyn, GitLab, Mazur, Supabase.
- - **Against (0)**
- - **Not mentioned (0)**
+- **For (9)**: Holywell, Celko, PostgreSQL, PG.ai, Mozilla, Brooklyn, GitLab, Mazur, Supabase.
+- **Against (0)**
+- **Not mentioned (0)**
 
-## Names must be descriptive, consistent and unambiguous
+## NAM-02 Names must be descriptive, consistent and unambiguous
 
 Use descriptive names and consistent across tables (for example, `cohort` should mean the same and have the same data type everywhere). Do not use descriptive prefixes that explain the role or type of the identifier (`tbl_`, `sp_`, `vw_`, ...). The exception is table constraint names, which may start with a prefix for the constraint type (`chk_`, `fk_`, ...), as the type is part of what the name has to convey.
 
@@ -44,9 +44,10 @@ Generic column names such as `id`, `name` or `type` are allowed inside their own
 
 When a query selects a generic column from a table other than the one its result describes, give it a meaningful alias in `table_column` form (`users.id AS user_id`, `courses.name AS course_name`). This keeps the result set unambiguous. Generic columns of the table the result is about (such as `students.id` in a query or CTE that returns students) keep their name.
 
-##### Example
+### Example
 
 Bad:
+
 ```sql
 SELECT
     enrolments.pid,
@@ -60,6 +61,7 @@ INNER JOIN tbl_courses
 ```
 
 Good:
+
 ```sql
 SELECT
     enrolments.participant_id,
@@ -72,40 +74,46 @@ INNER JOIN courses
     ON enrolments.course_id = courses.id
 ```
 
-#### Source breakdown
+### Source breakdown
 
 Regarding descriptive names:
- - **For (4)**: Holywell, Celko, Mozilla, Supabase.
- - **Against (0)**
- - **Not mentioned (5)**: PostgreSQL, PG.ai, Brooklyn, GitLab, Mazur.
+
+- **For (4)**: Holywell, Celko, Mozilla, Supabase.
+- **Against (0)**
+- **Not mentioned (5)**: PostgreSQL, PG.ai, Brooklyn, GitLab, Mazur.
 
 Regarding consistent naming across tables:
- - **For (1)**: Celko.
- - **Against (0)**
- - **Not mentioned (8)**: PostgreSQL, PG.ai, Brooklyn, GitLab, Mazur, Mozilla, Supabase, Holywell.
+
+- **For (1)**: Celko.
+- **Against (0)**
+- **Not mentioned (8)**: PostgreSQL, PG.ai, Brooklyn, GitLab, Mazur, Mozilla, Supabase, Holywell.
 
 Regarding not using descriptive prefixes:
- - **For (3)**: Holywell, Celko, Supabase.
- - **Against (1)**: PG.ai.
- - **Not mentioned (5)**: PostgreSQL, Brooklyn, Mazur, Mozilla, GitLab.
- 
+
+- **For (3)**: Holywell, Celko, Supabase.
+- **Against (1)**: PG.ai.
+- **Not mentioned (5)**: PostgreSQL, Brooklyn, Mazur, Mozilla, GitLab.
+
 Regarding avoiding abbreviations:
- - **For (2)**: Holywell, Celko.
- - **Against (0)**
- - **Not mentioned (7)**: PostgreSQL, PG.ai, Brooklyn, GitLab, Mazur, Mozilla, Supabase.
+
+- **For (2)**: Holywell, Celko.
+- **Against (0)**
+- **Not mentioned (7)**: PostgreSQL, PG.ai, Brooklyn, GitLab, Mazur, Mozilla, Supabase.
 
 Regarding no vague identifiers:
- - **For (3)**: Holywell, Celko, GitLab.
- - **Against (1)**: PG.ai.
- - **Not mentioned (5)**: PostgreSQL, Brooklyn, Mazur, Mozilla, Supabase.
 
-## Use unquoted alphanumeric names
+- **For (3)**: Holywell, Celko, GitLab.
+- **Against (1)**: PG.ai.
+- **Not mentioned (5)**: PostgreSQL, Brooklyn, Mazur, Mozilla, Supabase.
+
+## NAM-03 Use unquoted alphanumeric names
 
 Use only lowercase alphanumeric characters for names separated by underscores, beginning always with a letter. For readability reasons, they should never end in an underscore or contain multiple consecutive underscores. Always avoid quoted identifiers for names, as they are prone to cause query errors (many database providers are case insensitive, so forgetting the quotes leads to incorrect column assignations).
 
-##### Example
+### Example
 
 Bad:
+
 ```sql
 CREATE TABLE "Enrolments" (
     id            INTEGER      PRIMARY KEY,
@@ -118,6 +126,7 @@ CREATE TABLE "Enrolments" (
 ```
 
 Good:
+
 ```sql
 CREATE TABLE enrolments (
     id           INTEGER      PRIMARY KEY,
@@ -129,30 +138,34 @@ CREATE TABLE enrolments (
 )
 ```
 
-#### Source breakdown
+### Source breakdown
 
 Regarding the use of only alphanumeric characters, starting with a letter:
- - **For (4)**: Holywell, Celko, PG.ai, Mozilla.
- - **Against (0)**
- - **Not mentioned (5)**: PostgreSQL, Brooklyn, GitLab, Mazur, Supabase.
+
+- **For (4)**: Holywell, Celko, PG.ai, Mozilla.
+- **Against (0)**
+- **Not mentioned (5)**: PostgreSQL, Brooklyn, GitLab, Mazur, Supabase.
 
 Regarding no consecutive underscores:
- - **For (2)**: Holywell, Celko.
- - **Against (0)**
- - **Not mentioned (7)**: PostgreSQL, PG.ai, Brooklyn, GitLab, Mazur, Mozilla, Supabase.
+
+- **For (2)**: Holywell, Celko.
+- **Against (0)**
+- **Not mentioned (7)**: PostgreSQL, PG.ai, Brooklyn, GitLab, Mazur, Mozilla, Supabase.
 
 Regarding quoted identifiers:
- - **For (3)**: Holywell, Celko, GitLab.
- - **Against (0)**
- - **Not mentioned (6)**: PostgreSQL, PG.ai, Brooklyn, Mazur, Mozilla, Supabase.
 
-## Do not use reserved words as identifiers
+- **For (3)**: Holywell, Celko, GitLab.
+- **Against (0)**
+- **Not mentioned (6)**: PostgreSQL, PG.ai, Brooklyn, Mazur, Mozilla, Supabase.
+
+## NAM-04 Do not use reserved words as identifiers
 
 Never use words such as `sum`, `count`, ... It will have to be quoted everywhere it is used or it will fail.
 
-##### Example
+### Example
 
 Bad:
+
 ```sql
 CREATE TABLE employees (
     id         INTEGER PRIMARY KEY,
@@ -165,6 +178,7 @@ CREATE TABLE union (...)
 ```
 
 Good:
+
 ```sql
 CREATE TABLE employees (
     id         INTEGER PRIMARY KEY,
@@ -176,69 +190,74 @@ CREATE TABLE employees (
 CREATE TABLE merges (...)
 ```
 
-#### Source breakdown
+### Source breakdown
 
- - **For (3)**: Brooklyn, GitLab, Supabase.
- - **Against (0)**
- - **Not mentioned (6)**: Holywell, Celko, PostgreSQL, PG.ai, Mozilla, Mazur.
+- **For (3)**: Brooklyn, GitLab, Supabase.
+- **Against (0)**
+- **Not mentioned (6)**: Holywell, Celko, PostgreSQL, PG.ai, Mozilla, Mazur.
 
-## Use collective, class or plural nouns for tables
+## NAM-05 Use collective, class or plural nouns for tables
 
 The core reasoning behind this rule is that tables hold many rows, and each row represents one entity of something, so the table name should reflect its plural nature. Use collective nouns if possible (for example, `staff` over `employees`). Otherwise, use plural nouns.
 
 The only exception to this rule would be for "singleton" tables: tables that will only contain and will contain one row. Those should be in singular to reflect their nature.
 
-##### Example
+### Example
 
 Bad:
+
 ```sql
 CREATE TABLE acrobats (...);
 CREATE TABLE course (...);
 ```
 
 Good:
+
 ```sql
 CREATE TABLE troupe (...);
 CREATE TABLE courses (...);
 ```
 
-#### Source breakdown
+### Source breakdown
 
- - **For (4)**: Holywell, Celko, Mazur, Supabase.
- - **Against (1)**: PG.ai.
- - **Not mentioned (4)**: Brooklyn, GitLab, PostgreSQL, Mozilla.
+- **For (4)**: Holywell, Celko, Mazur, Supabase.
+- **Against (1)**: PG.ai.
+- **Not mentioned (4)**: Brooklyn, GitLab, PostgreSQL, Mozilla.
 
-## Avoid concatenating names for relationship tables
+## NAM-06 Avoid concatenating names for relationship tables
 
 Avoid using concatenated names for relationship tables, preferring a common descriptive name (`syllabus` instead of `course_materials`). If there is no common term, the concatenation will probably be the better fit.
 
-##### Example
+### Example
 
 Bad:
+
 ```sql
 CREATE TABLE student_courses (...);
 CREATE TABLE actor_films (...);
 ```
 
 Good:
+
 ```sql
 CREATE TABLE enrolments (...);
 CREATE TABLE castings (...);
 ```
 
-#### Source breakdown
+### Source breakdown
 
- - **For (2)**: Holywell, Celko.
- - **Against (0)**
- - **Not mentioned (7)**: Brooklyn, GitLab, PostgreSQL, Mozilla, Mazur, Supabase, PG.ai.
+- **For (2)**: Holywell, Celko.
+- **Against (0)**
+- **Not mentioned (7)**: Brooklyn, GitLab, PostgreSQL, Mozilla, Mazur, Supabase, PG.ai.
 
-## Use singular names for columns
+## NAM-07 Use singular names for columns
 
 A column holds one value per row, so using singular reflects that. An exception can be made for `ARRAY` or `JSON` columns, but those should be avoided where possible.
 
-##### Example
+### Example
 
 Bad:
+
 ```sql
 CREATE TABLE players (
     id        INTEGER PRIMARY KEY,
@@ -248,6 +267,7 @@ CREATE TABLE players (
 ```
 
 Good:
+
 ```sql
 CREATE TABLE players (
     id         INTEGER PRIMARY KEY,
@@ -256,27 +276,27 @@ CREATE TABLE players (
 )
 ```
 
-#### Source breakdown
+### Source breakdown
 
- - **For (4)**: Holywell, Celko, Supabase, PostgreSQL.
- - **Against (0)**
- - **Not mentioned (5)**: Brooklyn, GitLab, Mozilla, Mazur, PG.ai.
+- **For (4)**: Holywell, Celko, Supabase, PostgreSQL.
+- **Against (0)**
+- **Not mentioned (5)**: Brooklyn, GitLab, Mozilla, Mazur, PG.ai.
 
-## Use standardised prefixes and suffixes
+## NAM-08 Use standardised prefixes and suffixes
 
-Use standardised prefixes and suffixes to convey meaning, making them understandable without the need to inspect their values and data types. 
+Use standardised prefixes and suffixes to convey meaning, making them understandable without the need to inspect their values and data types.
 
 A non comprehensive list of some standard prefixes and suffixes is as follows:
 
 | Prefix/Suffix | Meaning |
 | ------------- | ------- |
-| `_id`         | A unique identifier, such as a foreign key (`course_id`) or any other ID |
-| `_status`     | A flag or status |
+| `_id` | A unique identifier, such as a foreign key (`course_id`) or any other ID |
+| `_status` | A flag or status |
 | `_total`, `total_` | Total or sum of values |
-| `_name`       | A name |
-| `_size`       | A size |
-| `_date`       | A date (for example, `2026-04-14`) |
-| `_at`         | A date and time (for example, `2026-04-14 00:00:00`) |
+| `_name` | A name |
+| `_size` | A size |
+| `_date` | A date (for example, `2026-04-14`) |
+| `_at` | A date and time (for example, `2026-04-14 00:00:00`) |
 | `_addr`, `_address` | An address, physical or intangible |
 | `is_`, `has_` | A boolean flag |
 | `_eur`, `_ms` | Numeric unit of the data (seconds, litres, ...) |
@@ -284,9 +304,10 @@ A non comprehensive list of some standard prefixes and suffixes is as follows:
 
 A table's own single-column primary key is named `id`. The `_id` suffix is used for foreign keys that reference another table's `id` (`enrolments.course_id` referencing `courses.id`), and for identifiers in general, such as external or business IDs (`stripe_customer_id`).
 
-##### Example
+### Example
 
 Bad:
+
 ```sql
 SELECT
     treatment,
@@ -296,6 +317,7 @@ FROM patients
 ```
 
 Good:
+
 ```sql
 SELECT
     has_treatment,
@@ -304,27 +326,31 @@ SELECT
 FROM patients
 ```
 
-#### Source breakdown
+### Source breakdown
 
 Regarding general standardised suffixes and prefixes:
- - **For (5)**: Holywell, Celko, Brooklyn, GitLab, Mazur.
- - **Against (0)**
- - **Not mentioned (4)**: PostgreSQL, Mozilla, PG.ai, Supabase.
+
+- **For (5)**: Holywell, Celko, Brooklyn, GitLab, Mazur.
+- **Against (0)**
+- **Not mentioned (4)**: PostgreSQL, Mozilla, PG.ai, Supabase.
 
 Regarding bare `id` primary keys with `_id` foreign keys:
- - **For (2)**: Brooklyn, Supabase.
- - **Against (2)**: Holywell, Celko (they avoid bare `id` columns).
- - **Not mentioned (5)**: PostgreSQL, Mozilla, PG.ai, GitLab, Mazur.
 
-## Do not use the table name as a column name or prefix
+- **For (2)**: Brooklyn, Supabase.
+- **Against (2)**: Holywell, Celko (they avoid bare `id` columns).
+- **Not mentioned (5)**: PostgreSQL, Mozilla, PG.ai, GitLab, Mazur.
+
+## NAM-09 Do not use the table name as a column name or prefix
 
 Do not duplicate the table name in column name. This means two different things:
+
 1. Do not use the table name as a prefix for a column (no `courses.course_name`).
 2. Do not name a column identically to its table. A complete identical should never happen per previous rules, as tables should be collective/plural and columns singular, but things like `grades.grade` should be avoided.
 
-##### Example
+### Example
 
 Bad:
+
 ```sql
 CREATE TABLE grades (
     id           INTEGER      PRIMARY KEY,
@@ -334,6 +360,7 @@ CREATE TABLE grades (
 ```
 
 Good:
+
 ```sql
 CREATE TABLE grades (
     id     INTEGER      PRIMARY KEY,
@@ -342,21 +369,22 @@ CREATE TABLE grades (
 )
 ```
 
-#### Source breakdown
+### Source breakdown
 
- - **For (3)**: Holywell, Celko, Supabase.
- - **Against (0)**
- - **Not mentioned (6)**: Brooklyn, GitLab, Mozilla, Mazur, PG.ai, PostgreSQL.
+- **For (3)**: Holywell, Celko, Supabase.
+- **Against (0)**
+- **Not mentioned (6)**: Brooklyn, GitLab, Mozilla, Mazur, PG.ai, PostgreSQL.
 
-## CTE and subquery names should be descriptive
+## NAM-10 CTE and subquery names should be descriptive
 
 CTE names should clearly convey what the CTE produces. Prefer names that read like a noun phrase describing the result set  (like `active_students`) rather than abbreviations or vague labels like `data` or `tmp`. Make names as long as they need to be to stay unambiguous, without padding them with unnecessary words.
 
 The same applies to subquery aliases, for example a subquery in a `JOIN` or `FROM` clause.
 
-##### Example
+### Example
 
 Bad:
+
 ```sql
 WITH d AS (
 ...
@@ -372,6 +400,7 @@ final AS (
 ```
 
 Good:
+
 ```sql
 WITH active_students AS (
 ...
@@ -387,6 +416,7 @@ student_pass_rates AS (
 ```
 
 Bad (subquery):
+
 ```sql
 SELECT
     students.full_name,
@@ -403,6 +433,7 @@ INNER JOIN (
 ```
 
 Good (subquery):
+
 ```sql
 SELECT
     students.full_name,
@@ -418,19 +449,20 @@ INNER JOIN (
     ON students.id = student_course_counts.student_id
 ```
 
-#### Source breakdown
+### Source breakdown
 
- - **For descriptive (1)**: Brooklyn.
- - **For concise but clear (1)**: GitLab.
- - **Not mentioned (7)**: Holywell, Celko, PostgreSQL, PG.ai, Mozilla, Mazur, Supabase.
+- **For descriptive (1)**: Brooklyn.
+- **For concise but clear (1)**: GitLab.
+- **Not mentioned (7)**: Holywell, Celko, PostgreSQL, PG.ai, Mozilla, Mazur, Supabase.
 
-## Do not prefix or suffix CTE names with `cte`
+## NAM-11 Do not prefix or suffix CTE names with `cte`
 
 Avoid names like `cte_open_tickets` or `open_tickets_cte`. The `WITH` keyword already makes the CTE context clear, so the redundant label adds noise without adding information.
 
-##### Example
+### Example
 
 Bad:
+
 ```sql
 WITH cte_open_tickets AS (
     SELECT
@@ -447,6 +479,7 @@ FROM cte_open_tickets
 ```
 
 Good:
+
 ```sql
 WITH open_tickets AS (
     SELECT
@@ -462,8 +495,8 @@ SELECT
 FROM open_tickets
 ```
 
-#### Source breakdown
+### Source breakdown
 
- - **For (1)**: Brooklyn.
- - **Against (0)**
- - **Not mentioned (8)**: Holywell, Celko, PostgreSQL, PG.ai, Mozilla, GitLab, Mazur, Supabase.
+- **For (1)**: Brooklyn.
+- **Against (0)**
+- **Not mentioned (8)**: Holywell, Celko, PostgreSQL, PG.ai, Mozilla, GitLab, Mazur, Supabase.

@@ -1,12 +1,13 @@
 # Schema objects
 
-## Every table must have at least one key
+## DDL-01 Every table must have at least one key
 
 Every table must define at least one key to uniquely identify each row. A table without a key has no reliable way to reference, update, or deduplicate its rows.
 
-##### Example
+### Example
 
 Bad:
+
 ```sql
 CREATE TABLE enrolments (
     student_id  INTEGER   NOT NULL,
@@ -16,6 +17,7 @@ CREATE TABLE enrolments (
 ```
 
 Good:
+
 ```sql
 CREATE TABLE enrolments (
     student_id  INTEGER   NOT NULL,
@@ -26,19 +28,20 @@ CREATE TABLE enrolments (
 );
 ```
 
-#### Source breakdown
+### Source breakdown
 
- - **For (2)**: Holywell, Celko.
- - **Against (0)**
- - **Not mentioned (7)**: PostgreSQL, PG.ai, Mozilla, Brooklyn, GitLab, Mazur, Supabase.
+- **For (2)**: Holywell, Celko.
+- **Against (0)**
+- **Not mentioned (7)**: PostgreSQL, PG.ai, Mozilla, Brooklyn, GitLab, Mazur, Supabase.
 
-## Give constraints explicit custom names
+## DDL-02 Give constraints explicit custom names
 
 Name constraints explicitly so that error messages and schema introspection are meaningful. The exceptions are `UNIQUE`, `PRIMARY KEY`, and `FOREIGN KEY` — these can rely on database-generated names.
 
-##### Example
+### Example
 
 Bad:
+
 ```sql
 CREATE TABLE products (
     id    INTEGER NOT NULL,
@@ -51,6 +54,7 @@ CREATE TABLE products (
 ```
 
 Good:
+
 ```sql
 CREATE TABLE products (
     id    INTEGER NOT NULL,
@@ -62,19 +66,20 @@ CREATE TABLE products (
 );
 ```
 
-#### Source breakdown
+### Source breakdown
 
- - **For (2)**: Holywell, Celko.
- - **Against (0)**
- - **Not mentioned (7)**: PostgreSQL, PG.ai, Mozilla, Brooklyn, GitLab, Mazur, Supabase.
+- **For (2)**: Holywell, Celko.
+- **Against (0)**
+- **Not mentioned (7)**: PostgreSQL, PG.ai, Mozilla, Brooklyn, GitLab, Mazur, Supabase.
 
-## Place multi-column constraints near both columns; table-level constraints at the end
+## DDL-03 Place multi-column constraints near both columns; table-level constraints at the end
 
 Multi-column constraints should be positioned as close as possible to all the columns they reference. Table-level constraints (those that span multiple columns or apply to the table as a whole) go at the end of the `CREATE TABLE` definition, after all column declarations.
 
-##### Example
+### Example
 
 Bad:
+
 ```sql
 CREATE TABLE loans (
     PRIMARY KEY (member_id, book_id),
@@ -86,6 +91,7 @@ CREATE TABLE loans (
 ```
 
 Good:
+
 ```sql
 CREATE TABLE loans (
     member_id   INTEGER   NOT NULL,
@@ -97,19 +103,20 @@ CREATE TABLE loans (
 );
 ```
 
-#### Source breakdown
+### Source breakdown
 
- - **For (2)**: Holywell, Celko.
- - **Against (0)**
- - **Not mentioned (7)**: PostgreSQL, PG.ai, Mozilla, Brooklyn, GitLab, Mazur, Supabase.
+- **For (2)**: Holywell, Celko.
+- **Against (0)**
+- **Not mentioned (7)**: PostgreSQL, PG.ai, Mozilla, Brooklyn, GitLab, Mazur, Supabase.
 
-## Declare `PRIMARY KEY` first, immediately after the column list
+## DDL-04 Declare `PRIMARY KEY` first, immediately after the column list
 
 The `PRIMARY KEY` constraint should be the first constraint declared in a `CREATE TABLE` statement, placed right after the last column definition.
 
-##### Example
+### Example
 
 Bad:
+
 ```sql
 CREATE TABLE projects (
     id        INTEGER NOT NULL,
@@ -121,6 +128,7 @@ CREATE TABLE projects (
 ```
 
 Good:
+
 ```sql
 CREATE TABLE projects (
     id        INTEGER NOT NULL,
@@ -132,19 +140,20 @@ CREATE TABLE projects (
 );
 ```
 
-#### Source breakdown
+### Source breakdown
 
- - **For (2)**: Holywell, Celko.
- - **Against (0)**
- - **Not mentioned (7)**: PostgreSQL, PG.ai, Mozilla, Brooklyn, GitLab, Mazur, Supabase.
+- **For (2)**: Holywell, Celko.
+- **Against (0)**
+- **Not mentioned (7)**: PostgreSQL, PG.ai, Mozilla, Brooklyn, GitLab, Mazur, Supabase.
 
-## Keep each constraint single-focused
+## DDL-05 Keep each constraint single-focused
 
 Each `CHECK()` constraint should validate exactly one rule, do not combine multiple conditions into a single constraint. Use `CHECK()` constraints to enforce numerical ranges, with at minimum a `> 0` guard where a value must be positive.
 
-##### Example
+### Example
 
 Bad:
+
 ```sql
 CREATE TABLE discounts (
     id           INTEGER NOT NULL,
@@ -158,6 +167,7 @@ CREATE TABLE discounts (
 ```
 
 Good:
+
 ```sql
 CREATE TABLE discounts (
     id           INTEGER NOT NULL,
@@ -172,19 +182,20 @@ CREATE TABLE discounts (
 );
 ```
 
-#### Source breakdown
+### Source breakdown
 
- - **For (2)**: Holywell, Celko.
- - **Against (0)**
- - **Not mentioned (7)**: PostgreSQL, PG.ai, Mozilla, Brooklyn, GitLab, Mazur, Supabase.
+- **For (2)**: Holywell, Celko.
+- **Against (0)**
+- **Not mentioned (7)**: PostgreSQL, PG.ai, Mozilla, Brooklyn, GitLab, Mazur, Supabase.
 
-## Use `LIKE` and `SIMILAR TO` for string format validation in constraints
+## DDL-06 Use `LIKE` and `SIMILAR TO` for string format validation in constraints
 
 When constraining the format of a text column, use `LIKE` for simple pattern matching or `SIMILAR TO` for regex-style patterns. These are portable SQL standard expressions.
 
-##### Example
+### Example
 
 Bad:
+
 ```sql
 CREATE TABLE suppliers (
     id         INTEGER NOT NULL,
@@ -196,6 +207,7 @@ CREATE TABLE suppliers (
 ```
 
 Good:
+
 ```sql
 CREATE TABLE suppliers (
     id         INTEGER NOT NULL,
@@ -208,19 +220,20 @@ CREATE TABLE suppliers (
 );
 ```
 
-#### Source breakdown
+### Source breakdown
 
- - **For (2)**: Holywell, Celko.
- - **Against (0)**
- - **Not mentioned (7)**: PostgreSQL, PG.ai, Mozilla, Brooklyn, GitLab, Mazur, Supabase.
+- **For (2)**: Holywell, Celko.
+- **Against (0)**
+- **Not mentioned (7)**: PostgreSQL, PG.ai, Mozilla, Brooklyn, GitLab, Mazur, Supabase.
 
-## Always explicitly name the columns a view exposes
+## DDL-07 Always explicitly name the columns a view exposes
 
 Never rely on `SELECT *` in a view definition. Always list the columns the view exposes by name. This prevents silent breakage when the underlying table gains, loses, or reorders columns.
 
-##### Example
+### Example
 
 Bad:
+
 ```sql
 CREATE VIEW active_employees AS
 SELECT
@@ -231,6 +244,7 @@ WHERE
 ```
 
 Good:
+
 ```sql
 CREATE VIEW active_employees AS
 SELECT
@@ -243,19 +257,20 @@ WHERE
     is_active IS true
 ```
 
-#### Source breakdown
+### Source breakdown
 
- - **For (1)**: Celko.
- - **Against (0)**
- - **Not mentioned (8)**: Holywell, PostgreSQL, PG.ai, Mozilla, Brooklyn, GitLab, Mazur, Supabase.
+- **For (1)**: Celko.
+- **Against (0)**
+- **Not mentioned (8)**: Holywell, PostgreSQL, PG.ai, Mozilla, Brooklyn, GitLab, Mazur, Supabase.
 
-## Avoid view proliferation
+## DDL-08 Avoid view proliferation
 
 Do not create views as a default abstraction layer. Each view should exist because it solves a specific, recurring problem, such as enforcing access control, encapsulating a complex join, or standardising a derived metric. If a view has no clear purpose, it becomes maintenance burden without value.
 
-##### Example
+### Example
 
 Bad:
+
 ```sql
 /* A view that just mirrors the base table with no added value */
 CREATE VIEW students_view AS
@@ -269,6 +284,7 @@ FROM students
 ```
 
 Good:
+
 ```sql
 /* A view that encapsulates a meaningful, reusable definition */
 CREATE VIEW active_students_with_school AS
@@ -284,8 +300,8 @@ WHERE
     students.is_active IS true
 ```
 
-#### Source breakdown
+### Source breakdown
 
- - **For (1)**: Celko.
- - **Against (0)**
- - **Not mentioned (8)**: Holywell, PostgreSQL, PG.ai, Mozilla, Brooklyn, GitLab, Mazur, Supabase.
+- **For (1)**: Celko.
+- **Against (0)**
+- **Not mentioned (8)**: Holywell, PostgreSQL, PG.ai, Mozilla, Brooklyn, GitLab, Mazur, Supabase.

@@ -1,14 +1,15 @@
 # Layout
 
-## Left align all keywords, starting on the same character boundary
+## LAY-01 Left align all keywords, starting on the same character boundary
 
 Align all clause keywords to the same left margin instead of right-aligning them to a common boundary (**river** alignment).
 
 Left-aligned keywords are simpler to write and maintain. No padding arithmetic is needed, and adding a longer keyword (switching `JOIN` to `INNER JOIN`, for example) does not force re-alignment of everything else on the page. It also works without editor tooling, which makes it easier to enforce consistently across a team.
 
-##### Example
+### Example
 
 Bad:
+
 ```sql
 SELECT full_name,
        email,
@@ -18,6 +19,7 @@ SELECT full_name,
 ```
 
 Good:
+
 ```sql
 SELECT
     full_name,
@@ -28,24 +30,26 @@ WHERE
     country_code = 'ES'
 ```
 
-#### Source breakdown
+### Source breakdown
 
- - **For river (2)**: Celko, Holywell.
- - **For left align (5)**: PG.ai, GitLab, Mozilla, Brooklyn, Mazur.
- - **No mention (2)**: PostgreSQL, Supabase.
+- **For river (2)**: Celko, Holywell.
+- **For left align (5)**: PG.ai, GitLab, Mozilla, Brooklyn, Mazur.
+- **No mention (2)**: PostgreSQL, Supabase.
 
-## Each major clause on its own line
+## LAY-02 Each major clause on its own line
 
 Each major SQL clause (`SELECT`, `FROM`, `WHERE`, `GROUP BY`, `HAVING`, `ORDER BY`, etc.) must start on its own line. This separates the logical structure of the query from its arguments and makes the query easier to scan, modify, and review.
 
-##### Example
+### Example
 
 Bad:
+
 ```sql
 SELECT full_name, email FROM employees WHERE hire_year > 2020 GROUP BY full_name, email
 ```
 
 Good:
+
 ```sql
 SELECT
     full_name,
@@ -56,21 +60,22 @@ WHERE
 GROUP BY full_name, email
 ```
 
-#### Source breakdown
+### Source breakdown
 
- - **For (7)**: Holywell, PostgreSQL, PG.ai, Mozilla, Brooklyn, GitLab, Mazur.
- - **Against (0)**
- - **Not mentioned (2)**: Celko, Supabase.
+- **For (7)**: Holywell, PostgreSQL, PG.ai, Mozilla, Brooklyn, GitLab, Mazur.
+- **Against (0)**
+- **Not mentioned (2)**: Celko, Supabase.
 
-## Place `SELECT`, `WHERE` and `HAVING` arguments below the keyword
+## LAY-03 Place `SELECT`, `WHERE` and `HAVING` arguments below the keyword
 
 The arguments of `SELECT`, `WHERE` and `HAVING` clauses must each be on their own line below the keyword, indented one level, including the first one. This applies even when the clause has a single argument.
 
-All other clauses (`FROM`, `JOIN`, `GROUP BY`, `ORDER BY`, ...) keep their arguments on the same line as the keyword. `JOIN` conditions are the one exception, and follow [their own rule](#place-join-conditions-below-the-keyword).
+All other clauses (`FROM`, `JOIN`, `GROUP BY`, `ORDER BY`, ...) keep their arguments on the same line as the keyword. `JOIN` conditions are the one exception, and follow [their own rule](#lay-05-place-join-conditions-below-the-keyword).
 
-##### Example
+### Example
 
 Bad:
+
 ```sql
 SELECT name, sku, price
 FROM products
@@ -78,6 +83,7 @@ WHERE price > 100
 ```
 
 Bad (single argument sharing the line):
+
 ```sql
 SELECT count(*) AS total_products
 FROM products
@@ -85,6 +91,7 @@ WHERE price > 100
 ```
 
 Good:
+
 ```sql
 SELECT
     name,
@@ -96,29 +103,30 @@ WHERE
 ORDER BY price, name
 ```
 
-#### Source breakdown
+### Source breakdown
 
 Regarding a single argument also being placed below the root keyword:
 
- - **For (0)**
- - **Against (3)**: Mozilla, PG.ai, Brooklyn (they allow a single argument to share the line with the keyword).
- - **Not mentioned (6)**: Holywell, Celko, PostgreSQL, GitLab, Mazur, Supabase.
+- **For (0)**
+- **Against (3)**: Mozilla, PG.ai, Brooklyn (they allow a single argument to share the line with the keyword).
+- **Not mentioned (6)**: Holywell, Celko, PostgreSQL, GitLab, Mazur, Supabase.
 
 Regarding multiple arguments each on their own line, including the first:
 
- - **For (4)**: Mozilla, PG.ai, Brooklyn, Mazur.
- - **Against (2)**: Holywell, Celko (the river pattern places the first argument on the same line as the keyword).
- - **Not mentioned (3)**: PostgreSQL, GitLab, Supabase.
+- **For (4)**: Mozilla, PG.ai, Brooklyn, Mazur.
+- **Against (2)**: Holywell, Celko (the river pattern places the first argument on the same line as the keyword).
+- **Not mentioned (3)**: PostgreSQL, GitLab, Supabase.
 
 ---
 
-## Use 4 spaces for indentation
+## LAY-04 Use 4 spaces for indentation
 
 Use **4 spaces** for each level of indentation. This is the most common choice among the sources consulted, providing enough visual separation to clearly distinguish nested levels without excessive horizontal growth.
 
-##### Example
+### Example
 
 Bad:
+
 ```sql
 SELECT
   full_name,
@@ -129,6 +137,7 @@ WHERE
 ```
 
 Good:
+
 ```sql
 SELECT
     full_name,
@@ -138,19 +147,20 @@ WHERE
     age >= 65
 ```
 
-#### Source breakdown
+### Source breakdown
 
- - **For 4 spaces (2)**: Brooklyn, Holywell.
- - **For 2 spaces (1)**: GitLab.
- - **Not mentioned (6)**: Celko, PostgreSQL, PG.ai, Mozilla, Mazur, Supabase.
+- **For 4 spaces (2)**: Brooklyn, Holywell.
+- **For 2 spaces (1)**: GitLab.
+- **Not mentioned (6)**: Celko, PostgreSQL, PG.ai, Mozilla, Mazur, Supabase.
 
-## Place `JOIN` conditions below the keyword
+## LAY-05 Place `JOIN` conditions below the keyword
 
 When joining tables, place the `ON` keyword on a new line, indented one level under the `JOIN` keyword, even when there is a single condition. This clearly separates the join condition from the join declaration and makes it easier to identify at a glance.
 
-##### Example
+### Example
 
 Bad:
+
 ```sql
 SELECT
     customers.full_name,
@@ -161,6 +171,7 @@ INNER JOIN products ON orders.product_id = products.id
 ```
 
 Good:
+
 ```sql
 SELECT
     customers.full_name,
@@ -173,19 +184,20 @@ INNER JOIN products
     ON orders.product_id = products.id
 ```
 
-#### Source breakdown
+### Source breakdown
 
- - **For indented `ON` (1)**: Mozilla.
- - **For inline single / indented multiple (2)**: Brooklyn, Mazur.
- - **Not mentioned (6)**: Holywell, Celko, PostgreSQL, PG.ai, GitLab, Supabase.
+- **For indented `ON` (1)**: Mozilla.
+- **For inline single / indented multiple (2)**: Brooklyn, Mazur.
+- **Not mentioned (6)**: Holywell, Celko, PostgreSQL, PG.ai, GitLab, Supabase.
 
-## Terminate the line after an open parenthesis
+## LAY-06 Terminate the line after an open parenthesis
 
 When a parenthesised construct spans multiple lines, the opening parenthesis should terminate the line it starts on. The contents should be indented one level, and the closing parenthesis should sit on its own line, aligned with the opening construct.
 
-##### Example
+### Example
 
 Bad:
+
 ```sql
 WITH active_drivers AS (SELECT
     id,
@@ -198,6 +210,7 @@ FROM active_drivers
 ```
 
 Good:
+
 ```sql
 WITH active_drivers AS (
     SELECT
@@ -213,19 +226,20 @@ SELECT
 FROM active_drivers
 ```
 
-#### Source breakdown
+### Source breakdown
 
- - **For (3)**: Holywell, PG.ai, Mozilla.
- - **Against (0)**
- - **Not mentioned (6)**: Celko, PostgreSQL, Brooklyn, GitLab, Mazur, Supabase.
+- **For (3)**: Holywell, PG.ai, Mozilla.
+- **Against (0)**
+- **Not mentioned (6)**: Celko, PostgreSQL, Brooklyn, GitLab, Mazur, Supabase.
 
-## Indent CTE bodies one level inside their parentheses
+## LAY-07 Indent CTE bodies one level inside their parentheses
 
 Start the first CTE on the same line as `WITH`, and each following CTE at the same level as `WITH`. Indent the body of every CTE one level inside its parentheses, and put the closing parenthesis on its own line at the level of the CTE name. Leave a blank line between each CTE, and after the last one, for visual separation.
 
-##### Example
+### Example
 
 Bad:
+
 ```sql
 WITH
 active_customers AS (
@@ -242,6 +256,7 @@ INNER JOIN recent_orders
 ```
 
 Good:
+
 ```sql
 WITH active_customers AS (
     SELECT
@@ -268,19 +283,20 @@ INNER JOIN recent_orders
     ON active_customers.id = recent_orders.customer_id
 ```
 
-#### Source breakdown
+### Source breakdown
 
- - **For (2)**: PostgreSQL, Brooklyn.
- - **Against (0)**
- - **Not mentioned (7)**: Holywell, Celko, PG.ai, Mozilla, GitLab, Mazur, Supabase.
+- **For (2)**: PostgreSQL, Brooklyn.
+- **Against (0)**
+- **Not mentioned (7)**: Holywell, Celko, PG.ai, Mozilla, GitLab, Mazur, Supabase.
 
-## Use one space between all language tokens
+## LAY-08 Use one space between all language tokens
 
-Always use exactly one space between language tokens: before and after operators (`=`, `>`, `<`, `!=`, ...) and after commas. Never crowd tokens together or add extra padding spaces to align values across lines. The only exceptions are [aligning `AS` keywords](#align-as-keywords-in-a-select-list) and [aligning data types and constraints in `CREATE TABLE`](#align-data-types-and-constraints-in-create-table).
+Always use exactly one space between language tokens: before and after operators (`=`, `>`, `<`, `!=`, ...) and after commas. Never crowd tokens together or add extra padding spaces to align values across lines. The only exceptions are [aligning `AS` keywords](#lay-09-align-as-keywords-in-a-select-list) and [aligning data types and constraints in `CREATE TABLE`](#lay-10-align-data-types-and-constraints-in-create-table).
 
-##### Example
+### Example
 
 Bad:
+
 ```sql
 SELECT
     full_name,
@@ -293,6 +309,7 @@ WHERE
 ```
 
 Good:
+
 ```sql
 SELECT
     full_name,
@@ -304,21 +321,22 @@ WHERE
     AND is_active IS true
 ```
 
-#### Source breakdown
+### Source breakdown
 
- - **For (3)**: Holywell, Celko, PostgreSQL.
- - **Against (0)**
- - **Not mentioned (6)**: PG.ai, Mozilla, Brooklyn, GitLab, Mazur, Supabase.
+- **For (3)**: Holywell, Celko, PostgreSQL.
+- **Against (0)**
+- **Not mentioned (6)**: PG.ai, Mozilla, Brooklyn, GitLab, Mazur, Supabase.
 
-## Align `AS` keywords in a `SELECT` list
+## LAY-09 Align `AS` keywords in a `SELECT` list
 
 When several columns in the same `SELECT` list have an alias, pad the expressions so that all the `AS` keywords line up in the same column, one space after the longest expression. Columns without an alias are left as they are.
 
 Aligned aliases make the output columns of a query easy to scan: the expressions are on the left and the resulting column names on the right.
 
-##### Example
+### Example
 
 Bad:
+
 ```sql
 SELECT
     region,
@@ -330,6 +348,7 @@ GROUP BY region
 ```
 
 Good:
+
 ```sql
 SELECT
     region,
@@ -340,17 +359,18 @@ FROM sales
 GROUP BY region
 ```
 
-## Align data types and constraints in `CREATE TABLE`
+## LAY-10 Align data types and constraints in `CREATE TABLE`
 
 In a `CREATE TABLE` definition, pad the column names so that all the data types start in the same column, one space after the longest column name. Do the same with the data types, so that the column constraints (`NOT NULL`, `DEFAULT`, ...) also start in the same column.
 
 For named table constraints at the end of the definition, pad the constraint names so that the constraint bodies (`CHECK (...)`, `FOREIGN KEY (...)`, ...) line up as well.
 
-As with [aligned `AS` keywords](#align-as-keywords-in-a-select-list), this turns the definition into a table that can be read in columns: names, types and constraints.
+As with [aligned `AS` keywords](#lay-09-align-as-keywords-in-a-select-list), this turns the definition into a table that can be read in columns: names, types and constraints.
 
-##### Example
+### Example
 
 Bad:
+
 ```sql
 CREATE TABLE students (
     id INTEGER NOT NULL,
@@ -365,6 +385,7 @@ CREATE TABLE students (
 ```
 
 Good:
+
 ```sql
 CREATE TABLE students (
     id         INTEGER      NOT NULL,
@@ -378,13 +399,14 @@ CREATE TABLE students (
 );
 ```
 
-## Don't add extra spaces inside parentheses or before function parentheses
+## LAY-11 Don't add extra spaces inside parentheses or before function parentheses
 
 Do not pad the inside of parentheses with spaces. Do not add a space between a function name and its opening parenthesis.
 
-##### Example
+### Example
 
 Bad:
+
 ```sql
 SELECT
     count( * )         AS total_transactions,
@@ -395,6 +417,7 @@ WHERE
 ```
 
 Good:
+
 ```sql
 SELECT
     count(*)         AS total_transactions,
@@ -404,21 +427,22 @@ WHERE
     currency IN ('EUR', 'USD')
 ```
 
-#### Source breakdown
+### Source breakdown
 
- - **For (3)**: Brooklyn, Mazur, PostgreSQL.
- - **Against (0)**
- - **Not mentioned (6)**: Holywell, Celko, PG.ai, Mozilla, GitLab, Supabase.
+- **For (3)**: Brooklyn, Mazur, PostgreSQL.
+- **Against (0)**
+- **Not mentioned (6)**: Holywell, Celko, PG.ai, Mozilla, GitLab, Supabase.
 
-## Put `AND` / `OR` at the beginning of the next line
+## LAY-12 Put `AND` / `OR` at the beginning of the next line
 
 In a `WHERE`, `HAVING`, or `ON` clause with multiple conditions, place `AND` and `OR` at the **beginning** of the next line rather than at the end of the current one. The operators keep the same indentation as the first condition.
 
 Placing boolean operators at the start of the line makes conditions easier to scan, as each condition begins with a clear logical marker, and the boundary between conditions is immediately visible. It also keeps diffs small: adding, removing or commenting out a condition touches only its own line.
 
-##### Example
+### Example
 
 Bad:
+
 ```sql
 SELECT
     *
@@ -430,6 +454,7 @@ WHERE
 ```
 
 Good:
+
 ```sql
 SELECT
     *
@@ -440,24 +465,26 @@ WHERE
     AND city IS NOT NULL
 ```
 
-#### Source breakdown
+### Source breakdown
 
- - **For (3)**: PG.ai, Mozilla, Brooklyn.
- - **Against (2)**: Celko, Mazur.
- - **Not mentioned (4)**: Holywell, PostgreSQL, GitLab, Supabase.
+- **For (3)**: PG.ai, Mozilla, Brooklyn.
+- **Against (2)**: Celko, Mazur.
+- **Not mentioned (4)**: Holywell, PostgreSQL, GitLab, Supabase.
 
-## Add new lines after semicolons and keyword definitions
+## LAY-13 Add new lines after semicolons and keyword definitions
 
 Leave a blank line after each semicolon to separate queries. Also leave a new line after each keyword definition to clearly demarcate logical blocks within a script.
 
-##### Example
+### Example
 
 Bad:
+
 ```sql
 SELECT count(*) AS total FROM students; SELECT count(*) AS total FROM courses;
 ```
 
 Good:
+
 ```sql
 SELECT
     count(*) AS total
@@ -468,19 +495,20 @@ SELECT
 FROM courses;
 ```
 
-#### Source breakdown
+### Source breakdown
 
- - **For (2)**: Holywell, Celko.
- - **Against (0)**
- - **Not mentioned (7)**: PostgreSQL, PG.ai, Mozilla, Brooklyn, GitLab, Mazur, Supabase.
+- **For (2)**: Holywell, Celko.
+- **Against (0)**
+- **Not mentioned (7)**: PostgreSQL, PG.ai, Mozilla, Brooklyn, GitLab, Mazur, Supabase.
 
-## Use blank lines between logically distinct sections
+## LAY-14 Use blank lines between logically distinct sections
 
 Leave a blank line between logically distinct sections of code, such as between CTEs, or between groups of related conditions in a long `WHERE` clause. This follows general coding best practices.
 
-##### Example
+### Example
 
 Bad:
+
 ```sql
 WITH active_students AS (
     SELECT
@@ -500,6 +528,7 @@ GROUP BY active_students.full_name
 ```
 
 Good:
+
 ```sql
 WITH active_students AS (
     SELECT
@@ -519,21 +548,22 @@ INNER JOIN enrolments
 GROUP BY active_students.full_name
 ```
 
-#### Source breakdown
+### Source breakdown
 
- - **For (4)**: Holywell, Celko, Brooklyn, Mazur.
- - **Against (0)**
- - **Not mentioned (5)**: PostgreSQL, PG.ai, Mozilla, GitLab, Supabase.
+- **For (4)**: Holywell, Celko, Brooklyn, Mazur.
+- **Against (0)**
+- **Not mentioned (5)**: PostgreSQL, PG.ai, Mozilla, GitLab, Supabase.
 
-## Use trailing commas
+## LAY-15 Use trailing commas
 
 In lists of arguments (columns in `SELECT`, values in `IN`, ...) place commas at the **end** of each line (trailing) rather than the **beginning** (leading).
 
 Trailing commas are the more widely supported convention and feel natural to most developers. A missing comma is already flagged by most IDEs before the query is run.
 
-##### Example
+### Example
 
 Bad:
+
 ```sql
 SELECT
       subject
@@ -543,6 +573,7 @@ FROM tickets
 ```
 
 Good:
+
 ```sql
 SELECT
     subject,
@@ -551,23 +582,24 @@ SELECT
 FROM tickets
 ```
 
-#### Source breakdown
+### Source breakdown
 
- - **For trailing commas (4)**: Celko, Mozilla, PG.ai, Mazur.
- - **For leading commas (1)**: Brooklyn.
- - **Not mentioned (4)**: Holywell, PostgreSQL, GitLab, Supabase.
+- **For trailing commas (4)**: Celko, Mozilla, PG.ai, Mazur.
+- **For leading commas (1)**: Brooklyn.
+- **Not mentioned (4)**: Holywell, PostgreSQL, GitLab, Supabase.
 
-## Keep lines under 120 characters
+## LAY-16 Keep lines under 120 characters
 
 Lines should not exceed **120 characters**, to keep queries readable in side-by-side views, code reviews, and editors with limited width. The limit is deliberately generous: in queries with several levels of subqueries, indentation alone takes up a good part of the line. Treat it as a ceiling, not a target.
 
 When a line goes over the limit, wrap the expression in parentheses. Break the line after the opening parenthesis, indent the content one level, and put the closing parenthesis on its own line, aligned with the line that opened it. Inside, break at logical points such as before an operator or after a comma, starting each line with the operator in the same way as `AND` / `OR`. The parentheses group the expression into one visible block, with a clear start and end.
 
-Function calls already have their own parentheses, so break inside those instead (see [Terminate the line after an open parenthesis](#terminate-the-line-after-an-open-parenthesis)). If an expression is still hard to read after breaking it, move it into a CTE.
+Function calls already have their own parentheses, so break inside those instead (see [Terminate the line after an open parenthesis](#lay-06-terminate-the-line-after-an-open-parenthesis)). If an expression is still hard to read after breaking it, move it into a CTE.
 
-##### Example
+### Example
 
 Bad:
+
 ```sql
 SELECT
     students.full_name,
@@ -578,6 +610,7 @@ INNER JOIN assessments
 ```
 
 Good:
+
 ```sql
 SELECT
     students.full_name,
@@ -592,19 +625,20 @@ INNER JOIN assessments
     ON students.id = assessments.student_id
 ```
 
-#### Source breakdown
+### Source breakdown
 
- - **For (2)**: Brooklyn, GitLab.
- - **Against (0)**
- - **Not mentioned (7)**: Holywell, Celko, PostgreSQL, PG.ai, Mozilla, Mazur, Supabase.
+- **For (2)**: Brooklyn, GitLab.
+- **Against (0)**
+- **Not mentioned (7)**: Holywell, Celko, PostgreSQL, PG.ai, Mozilla, Mazur, Supabase.
 
-## Break long `IN` lists into multiple indented lines
+## LAY-17 Break long `IN` lists into multiple indented lines
 
 When an `IN` list contains many values, place each value on its own indented line. This makes the list easier to scan and simplifies adding or removing values in version control diffs.
 
-##### Example
+### Example
 
 Bad:
+
 ```sql
 SELECT
     *
@@ -614,6 +648,7 @@ WHERE
 ```
 
 Good:
+
 ```sql
 SELECT
     *
@@ -631,20 +666,20 @@ WHERE
     )
 ```
 
-#### Source breakdown
+### Source breakdown
 
- - **For (2)**: Brooklyn, Mazur.
- - **Against (0)**
- - **Not mentioned (7)**: Holywell, Celko, PostgreSQL, PG.ai, Mozilla, GitLab, Supabase.
+- **For (2)**: Brooklyn, Mazur.
+- **Against (0)**
+- **Not mentioned (7)**: Holywell, Celko, PostgreSQL, PG.ai, Mozilla, GitLab, Supabase.
 
-## Use a multi line `CASE` structure
+## LAY-18 Use a multi line `CASE` structure
 
 For `CASE` expressions that span multiple lines, indent each `WHEN` one level under `CASE`. Place `THEN` on the same line as its `WHEN`. Put `ELSE` at the same indentation level as `WHEN`. Close with `END` on its own line, aligned with `CASE`.
 
-
-##### Example
+### Example
 
 Bad:
+
 ```sql
 SELECT
     endpoint,
@@ -655,6 +690,7 @@ FROM requests
 ```
 
 Good:
+
 ```sql
 SELECT
     endpoint,
@@ -666,19 +702,20 @@ SELECT
 FROM requests
 ```
 
-#### Source breakdown
+### Source breakdown
 
- - **For (2)**: Brooklyn, Mazur.
- - **Against (0)**
- - **Not mentioned (7)**: Holywell, Celko, PostgreSQL, PG.ai, Mozilla, GitLab, Supabase.
+- **For (2)**: Brooklyn, Mazur.
+- **Against (0)**
+- **Not mentioned (7)**: Holywell, Celko, PostgreSQL, PG.ai, Mozilla, GitLab, Supabase.
 
-## A single short `WHEN`/`THEN` can stay on one line
+## LAY-19 A single short `WHEN`/`THEN` can stay on one line
 
 When a `CASE` has only one `WHEN` branch and the `THEN` value is short, the entire expression can be written on a single line.
 
-##### Example
+### Example
 
 Bad (several branches on one line):
+
 ```sql
 SELECT
     endpoint,
@@ -687,6 +724,7 @@ FROM requests
 ```
 
 Good:
+
 ```sql
 SELECT
     endpoint,
@@ -694,19 +732,20 @@ SELECT
 FROM requests
 ```
 
-#### Source breakdown
+### Source breakdown
 
- - **For (1)**: Brooklyn.
- - **Against (0)**
- - **Not mentioned (8)**: Holywell, Celko, PostgreSQL, PG.ai, Mozilla, GitLab, Mazur, Supabase.
+- **For (1)**: Brooklyn.
+- **Against (0)**
+- **Not mentioned (8)**: Holywell, Celko, PostgreSQL, PG.ai, Mozilla, GitLab, Mazur, Supabase.
 
-## `CASE` inside a function call
+## LAY-20 `CASE` inside a function call
 
 When a `CASE` expression is nested inside a function call, place `CASE` and `END` each on their own lines, indented one level inside the function's parentheses.
 
-##### Example
+### Example
 
 Bad:
+
 ```sql
 SELECT
     count(CASE WHEN status = 'failed' THEN id ELSE NULL END) AS failed_payments
@@ -714,6 +753,7 @@ FROM payments
 ```
 
 Good:
+
 ```sql
 SELECT
     count(
@@ -725,19 +765,20 @@ SELECT
 FROM payments
 ```
 
-#### Source breakdown
+### Source breakdown
 
- - **For (1)**: Brooklyn.
- - **Against (0)**
- - **Not mentioned (8)**: Holywell, Celko, PostgreSQL, PG.ai, Mozilla, GitLab, Mazur, Supabase.
+- **For (1)**: Brooklyn.
+- **Against (0)**
+- **Not mentioned (8)**: Holywell, Celko, PostgreSQL, PG.ai, Mozilla, GitLab, Mazur, Supabase.
 
-## Keep window functions on one line when they fit. Expand sub-clauses when they don't
+## LAY-21 Keep window functions on one line when they fit. Expand sub-clauses when they don't
 
 If a window function fits on a single line without exceeding the line length limit, keep it there. When it needs to break across lines, place each sub-clause (`PARTITION BY`, `ORDER BY`, `ROWS/RANGE BETWEEN`) on its own line indented inside `OVER()`, and put the closing parenthesis on its own line at the same indentation level as the function.
 
-##### Example
+### Example
 
 Bad (fits on one line, but is split):
+
 ```sql
 SELECT
     full_name,
@@ -749,6 +790,7 @@ FROM employees
 ```
 
 Bad (too long for one line):
+
 ```sql
 SELECT
     ticker,
@@ -757,6 +799,7 @@ FROM stock_prices
 ```
 
 Good (fits on one line):
+
 ```sql
 SELECT
     full_name,
@@ -765,6 +808,7 @@ FROM employees
 ```
 
 Good (too long for one line):
+
 ```sql
 SELECT
     ticker,
@@ -776,8 +820,8 @@ SELECT
 FROM stock_prices
 ```
 
-#### Source breakdown
+### Source breakdown
 
- - **For (2)**: Brooklyn, Mazur.
- - **Against (0)**
- - **Not mentioned (7)**: Holywell, Celko, PostgreSQL, PG.ai, Mozilla, GitLab, Supabase.
+- **For (2)**: Brooklyn, Mazur.
+- **Against (0)**
+- **Not mentioned (7)**: Holywell, Celko, PostgreSQL, PG.ai, Mozilla, GitLab, Supabase.
