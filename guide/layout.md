@@ -1,4 +1,4 @@
-# Formatting
+# Layout
 
 ## Left align all keywords, starting on the same character boundary
 
@@ -597,3 +597,187 @@ INNER JOIN assessments
  - **For (2)**: Brooklyn, GitLab.
  - **Against (0)**
  - **Not mentioned (7)**: Holywell, Celko, PostgreSQL, PG.ai, Mozilla, Mazur, Supabase.
+
+## Break long `IN` lists into multiple indented lines
+
+When an `IN` list contains many values, place each value on its own indented line. This makes the list easier to scan and simplifies adding or removing values in version control diffs.
+
+##### Example
+
+Bad:
+```sql
+SELECT
+    *
+FROM students
+WHERE
+    school_id IN (101, 102, 103, 104, 105, 106, 107, 108)
+```
+
+Good:
+```sql
+SELECT
+    *
+FROM students
+WHERE
+    school_id IN (
+        101,
+        102,
+        103,
+        104,
+        105,
+        106,
+        107,
+        108
+    )
+```
+
+#### Source breakdown
+
+ - **For (2)**: Brooklyn, Mazur.
+ - **Against (0)**
+ - **Not mentioned (7)**: Holywell, Celko, PostgreSQL, PG.ai, Mozilla, GitLab, Supabase.
+
+## Use a multi line `CASE` structure
+
+For `CASE` expressions that span multiple lines, indent each `WHEN` one level under `CASE`. Place `THEN` on the same line as its `WHEN`. Put `ELSE` at the same indentation level as `WHEN`. Close with `END` on its own line, aligned with `CASE`.
+
+
+##### Example
+
+Bad:
+```sql
+SELECT
+    endpoint,
+    CASE WHEN latency_ms >= 1000 THEN 'Slow'
+    WHEN latency_ms >= 300 THEN 'Acceptable'
+    ELSE 'Fast' END AS speed_label
+FROM requests
+```
+
+Good:
+```sql
+SELECT
+    endpoint,
+    CASE
+        WHEN latency_ms >= 1000 THEN 'Slow'
+        WHEN latency_ms >= 300 THEN 'Acceptable'
+        ELSE 'Fast'
+    END AS speed_label
+FROM requests
+```
+
+#### Source breakdown
+
+ - **For (2)**: Brooklyn, Mazur.
+ - **Against (0)**
+ - **Not mentioned (7)**: Holywell, Celko, PostgreSQL, PG.ai, Mozilla, GitLab, Supabase.
+
+## A single short `WHEN`/`THEN` can stay on one line
+
+When a `CASE` has only one `WHEN` branch and the `THEN` value is short, the entire expression can be written on a single line.
+
+##### Example
+
+Bad (several branches on one line):
+```sql
+SELECT
+    endpoint,
+    CASE WHEN latency_ms >= 1000 THEN 'Slow' WHEN latency_ms >= 300 THEN 'Acceptable' ELSE 'Fast' END AS speed_label
+FROM requests
+```
+
+Good:
+```sql
+SELECT
+    endpoint,
+    CASE WHEN is_cached IS true THEN 'Cached' END AS cache_label
+FROM requests
+```
+
+#### Source breakdown
+
+ - **For (1)**: Brooklyn.
+ - **Against (0)**
+ - **Not mentioned (8)**: Holywell, Celko, PostgreSQL, PG.ai, Mozilla, GitLab, Mazur, Supabase.
+
+## `CASE` inside a function call
+
+When a `CASE` expression is nested inside a function call, place `CASE` and `END` each on their own lines, indented one level inside the function's parentheses.
+
+##### Example
+
+Bad:
+```sql
+SELECT
+    count(CASE WHEN status = 'failed' THEN id ELSE NULL END) AS failed_payments
+FROM payments
+```
+
+Good:
+```sql
+SELECT
+    count(
+        CASE
+            WHEN status = 'failed' THEN id
+            ELSE NULL
+        END
+    ) AS failed_payments
+FROM payments
+```
+
+#### Source breakdown
+
+ - **For (1)**: Brooklyn.
+ - **Against (0)**
+ - **Not mentioned (8)**: Holywell, Celko, PostgreSQL, PG.ai, Mozilla, GitLab, Mazur, Supabase.
+
+## Keep window functions on one line when they fit. Expand sub-clauses when they don't
+
+If a window function fits on a single line without exceeding the line length limit, keep it there. When it needs to break across lines, place each sub-clause (`PARTITION BY`, `ORDER BY`, `ROWS/RANGE BETWEEN`) on its own line indented inside `OVER()`, and put the closing parenthesis on its own line at the same indentation level as the function.
+
+##### Example
+
+Bad (fits on one line, but is split):
+```sql
+SELECT
+    full_name,
+    row_number() OVER (
+        PARTITION BY department_id
+        ORDER BY salary DESC
+    ) AS salary_rank
+FROM employees
+```
+
+Bad (too long for one line):
+```sql
+SELECT
+    ticker,
+    avg(close_price) OVER (PARTITION BY ticker, exchange ORDER BY traded_on ROWS BETWEEN 2 PRECEDING AND CURRENT ROW) AS rolling_average_price
+FROM stock_prices
+```
+
+Good (fits on one line):
+```sql
+SELECT
+    full_name,
+    row_number() OVER (PARTITION BY department_id ORDER BY salary DESC) AS salary_rank
+FROM employees
+```
+
+Good (too long for one line):
+```sql
+SELECT
+    ticker,
+    avg(close_price) OVER (
+        PARTITION BY ticker, exchange
+        ORDER BY traded_on
+        ROWS BETWEEN 2 PRECEDING AND CURRENT ROW
+    ) AS rolling_average_price
+FROM stock_prices
+```
+
+#### Source breakdown
+
+ - **For (2)**: Brooklyn, Mazur.
+ - **Against (0)**
+ - **Not mentioned (7)**: Holywell, Celko, PostgreSQL, PG.ai, Mozilla, GitLab, Supabase.

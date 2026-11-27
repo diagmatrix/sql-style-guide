@@ -1,4 +1,4 @@
-# Keyword rules
+# Keywords and functions
 
 ## Use uppercase for reserved words
 

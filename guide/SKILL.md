@@ -34,7 +34,7 @@ When reformatting a file, keep anything that isn't SQL (surrounding code, migrat
 
 ## Rule checklist
 
-### Formatting (`formatting.md`)
+### Layout (`layout.md`)
 - Left-align all clause keywords at the same margin. No "river" (right-aligned) keywords.
 - Each major clause (`SELECT`, `FROM`, `WHERE`, `GROUP BY`, `HAVING`, `ORDER BY`, ...) starts its own line.
 - `SELECT`, `WHERE` and `HAVING`: every argument on its own line below the keyword, indented one level, **even a single one** (`SELECT` / `    *`).
@@ -52,8 +52,11 @@ When reformatting a file, keep anything that isn't SQL (surrounding code, migrat
 - Blank lines between logically distinct sections (between CTEs, before the main query, between groups of conditions).
 - Trailing commas, never leading commas.
 - Lines under 120 characters. To break a long expression, wrap it in parentheses, break after `(`, indent, start each continuation line with its operator, close `)` on its own line. Break inside a function's own parentheses instead of adding new ones. Still unreadable → move it into a CTE.
+- Long `IN` lists: one value per line, indented, inside `IN (` ... `)`.
+- `CASE`: multi-line layout with each `WHEN ... THEN ...` indented under `CASE`, `ELSE` at the `WHEN` level, `END` aligned with `CASE`. A single short `WHEN` may stay on one line. Inside a function call, `CASE` and `END` go on their own lines inside the parentheses.
+- Window functions on one line when they fit under 120 characters; otherwise `OVER (` ends the line, each sub-clause (`PARTITION BY`, `ORDER BY`, `ROWS BETWEEN`) on its own indented line, `)` aligned with the function.
 
-### Keywords (`keywords.md`)
+### Keywords and functions (`keywords.md`)
 - Reserved words in UPPERCASE (`SELECT`, `AS`, `IS`, `CASE`, ...).
 - Full keyword forms instead of abbreviations (`INNER JOIN`, not `JOIN`).
 - Prefer ANSI functions over vendor-specific ones when an ANSI equivalent exists (`extract(YEAR FROM x)` over `date_part('year', x)`).
@@ -71,8 +74,9 @@ When reformatting a file, keep anything that isn't SQL (surrounding code, migrat
 - A table's own primary key is `id`; `_id` marks foreign keys and other identifiers (`orders.customer_id`).
 - Standard affixes: `_id`, `_status`, `_total`/`total_`, `_name`, `_size`, `_date` (date), `_at` (timestamp), `_addr`/`_address`, `is_`/`has_` (booleans), unit suffixes (`_eur`, `_ms`), `_month`/`_day`.
 - Generic columns (`id`, `name`, `type`) selected from a table other than the one the result describes get a `table_column` alias (`schools.name AS school_name`). Columns of the table the result is about keep their name (`customers.id` in a query returning customers).
+- CTE and subquery names are descriptive noun phrases (`active_customers`, not `tmp`, `d`, `sq`), with no `cte_` prefix or `_cte` suffix.
 
-### Aliasing (`aliasing.md`)
+### Aliasing and references (`aliasing.md`)
 - Always write `AS`, for columns and tables.
 - Every aggregate or computed column gets an alias (`count(*) AS total_orders`).
 - Prefer full table names. Alias only long or ambiguous names (or self-joins), with a meaningful word, never initials or `t1`/`x` (`school_district_areas AS districts`).
@@ -84,37 +88,28 @@ When reformatting a file, keep anything that isn't SQL (surrounding code, migrat
 - `--` only for commented-out code, one per line. Prefer deleting dead code over keeping it.
 - Comment non-obvious intent and business rules, not what the code plainly says. Explain CTEs whose logic is surprising.
 
-### Data types (`data-types.md`)
+### Data types and literals (`data-types.md`)
 - `NUMERIC` / `DECIMAL` for money and exact values; `REAL` / `FLOAT` only for genuine floating-point maths.
 - `BOOLEAN` for flags, with `true`/`false`, never `1`/`0`.
 - Defaults match the column type (`DEFAULT false` on a `BOOLEAN`, `DEFAULT 0` on a `NUMERIC`).
 - ISO 8601 date/time values, written with typed literals: `DATE '2024-09-01'`, `TIMESTAMP '2025-07-31T23:59:59'`.
 
-### Constraints and keys (`constraints-keys.md`)
-- Every table has at least one key.
-- Name constraints explicitly (`CONSTRAINT chk_products_price_min CHECK (price > 0)`). `PRIMARY KEY`, `FOREIGN KEY` and `UNIQUE` may use generated names.
-- Table-level constraints go after the columns, separated by a blank line; `PRIMARY KEY` is the first of them.
-- One rule per `CHECK`; guard numeric ranges (at least `> 0` where a value must be positive).
-- Validate text formats with `LIKE` / `SIMILAR TO`.
+### Expressions and conditions (`expressions.md`)
+- Use `BETWEEN` for ranges and `IN (...)` for value sets instead of chains of `AND` / `OR`.
+- `CASE`: use the simple form (`CASE status WHEN ...`) when comparing one expression.
+- Booleans compared with `IS true` / `IS false`, never implicit (`WHERE is_active`) or `NOT flag`.
+- `!=`, not `<>`.
+- No redundant parentheses (except to wrap a long expression across lines).
 
-### Joins (`joins.md`)
+### Query structure (`structure.md`)
+- Prefer CTEs over nested subqueries.
+- Avoid correlated subqueries; use a CTE plus `JOIN`.
+- One logical step per CTE.
 - Always `ON`, never `USING`.
 - In the condition, the table introduced first goes first (`ON customers.id = orders.customer_id`).
 - For `INNER JOIN`, row filters belong in `WHERE`; `ON` holds only the relationship. (Not for `LEFT JOIN`: moving them changes the result.)
 
-### Views (`views.md`)
-- List the columns explicitly; never `SELECT *` in a view.
-- Only create a view for a clear, recurring purpose, not as a mirror of a table.
-
-### Subqueries and CTEs (`subqueries-ctes.md`)
-- Prefer CTEs over nested subqueries.
-- Avoid correlated subqueries; use a CTE plus `JOIN`.
-- One logical step per CTE.
-- CTE and subquery names are descriptive noun phrases (`active_customers`, not `tmp`, `d`, `sq`), with no `cte_` prefix or `_cte` suffix.
-
-### Queries (`queries.md`)
-- Use `BETWEEN` for ranges and `IN (...)` for value sets instead of chains of `AND` / `OR`.
-- `CASE`: use the simple form (`CASE status WHEN ...`) when comparing one expression; multi-line layout with each `WHEN ... THEN ...` indented under `CASE`, `ELSE` at the `WHEN` level, `END` aligned with `CASE`. A single short `WHEN` may stay on one line. Inside a function call, `CASE` and `END` go on their own lines inside the parentheses.
+### Clauses (`clauses.md`)
 - `UNION ALL` unless removing duplicates is actually required.
 - Deduplicate with `SELECT DISTINCT` (written `SELECT` / `    DISTINCT` / columns), not `GROUP BY` on every column.
 - No `ORDER BY` unless the result's order is part of what's required.
@@ -122,11 +117,15 @@ When reformatting a file, keep anything that isn't SQL (surrounding code, migrat
 - Filters that don't depend on aggregates go in `WHERE`, not `HAVING`.
 - Group by a select-list alias rather than repeating the expression. Not standard SQL: it works in PostgreSQL, MySQL, BigQuery, Snowflake, but not SQL Server or Oracle, where you compute the expression in a CTE or subquery and group by its column.
 - Non-aggregated columns first in `SELECT`, aggregates last.
-- Booleans compared with `IS true` / `IS false`, never implicit (`WHERE is_active`) or `NOT flag`.
-- `!=`, not `<>`.
-- Long `IN` lists: one value per line, indented, inside `IN (` ... `)`.
-- No redundant parentheses (except to wrap a long expression across lines).
-- Window functions on one line when they fit under 120 characters; otherwise `OVER (` ends the line, each sub-clause (`PARTITION BY`, `ORDER BY`, `ROWS BETWEEN`) on its own indented line, `)` aligned with the function.
+
+### Schema objects (`schema.md`)
+- Every table has at least one key.
+- Name constraints explicitly (`CONSTRAINT chk_products_price_min CHECK (price > 0)`). `PRIMARY KEY`, `FOREIGN KEY` and `UNIQUE` may use generated names.
+- Table-level constraints go after the columns, separated by a blank line; `PRIMARY KEY` is the first of them.
+- One rule per `CHECK`; guard numeric ranges (at least `> 0` where a value must be positive).
+- Validate text formats with `LIKE` / `SIMILAR TO`.
+- List the columns explicitly; never `SELECT *` in a view.
+- Only create a view for a clear, recurring purpose, not as a mirror of a table.
 
 ## Example
 

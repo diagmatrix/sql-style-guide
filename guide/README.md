@@ -6,17 +6,16 @@ Most of the rules come from other SQL style guides, where a decision has been ma
 
 ## Rules structure
 
- 1. [Formatting](formatting.md)
- 2. [Keywords](keywords.md)
+ 1. [Layout](layout.md)
+ 2. [Keywords and functions](keywords.md)
  3. [Naming](naming.md)
- 4. [Aliasing](aliasing.md)
+ 4. [Aliasing and references](aliasing.md)
  5. [Comments](comments.md)
- 6. [Data types](data-types.md)
- 7. [Constraints and keys](constraints-keys.md)
- 8. [JOIN clauses](joins.md)
- 9. [Views](views.md)
- 10. [Subqueries and CTEs](subqueries-ctes.md)
- 11. [Queries](queries.md)
+ 6. [Data types and literals](data-types.md)
+ 7. [Expressions and conditions](expressions.md)
+ 8. [Query structure](structure.md)
+ 9. [Clauses](clauses.md)
+ 10. [Schema objects](schema.md)
 
 ## Sources
 
