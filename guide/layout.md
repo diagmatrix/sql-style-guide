@@ -35,12 +35,6 @@ WHERE
     country_code = 'ES'
 ```
 
-### Source breakdown
-
-- **For river (2)**: Celko, Holywell.
-- **For left align (5)**: PG.ai, GitLab, Mozilla, Brooklyn, Mazur.
-- **No mention (2)**: PostgreSQL, Supabase.
-
 ## LAY-02 Each major clause on its own line
 
 Each major SQL clause (`SELECT`, `FROM`, `WHERE`, `GROUP BY`, `HAVING`,
@@ -67,12 +61,6 @@ WHERE
     hire_year > 2020
 GROUP BY full_name, email
 ```
-
-### Source breakdown
-
-- **For (7)**: Holywell, PostgreSQL, PG.ai, Mozilla, Brooklyn, GitLab, Mazur.
-- **Against (0)**
-- **Not mentioned (2)**: Celko, Supabase.
 
 ## LAY-03 Place `SELECT`, `WHERE` and `HAVING` arguments below the keyword
 
@@ -116,24 +104,6 @@ WHERE
 ORDER BY price, name
 ```
 
-### Source breakdown
-
-Regarding a single argument also being placed below the root keyword:
-
-- **For (0)**
-- **Against (3)**: Mozilla, PG.ai, Brooklyn (they allow a single argument to
-  share the line with the keyword).
-- **Not mentioned (6)**: Holywell, Celko, PostgreSQL, GitLab, Mazur, Supabase.
-
-Regarding multiple arguments each on their own line, including the first:
-
-- **For (4)**: Mozilla, PG.ai, Brooklyn, Mazur.
-- **Against (2)**: Holywell, Celko (the river pattern places the first argument
-  on the same line as the keyword).
-- **Not mentioned (3)**: PostgreSQL, GitLab, Supabase.
-
----
-
 ## LAY-04 Use 4 spaces for indentation
 
 Use **4 spaces** for each level of indentation. This is the most common choice
@@ -163,12 +133,6 @@ FROM patients
 WHERE
     age >= 65
 ```
-
-### Source breakdown
-
-- **For 4 spaces (2)**: Brooklyn, Holywell.
-- **For 2 spaces (1)**: GitLab.
-- **Not mentioned (6)**: Celko, PostgreSQL, PG.ai, Mozilla, Mazur, Supabase.
 
 ## LAY-05 Place `JOIN` conditions below the keyword
 
@@ -203,12 +167,6 @@ INNER JOIN orders
 INNER JOIN products
     ON orders.product_id = products.id
 ```
-
-### Source breakdown
-
-- **For indented `ON` (1)**: Mozilla.
-- **For inline single / indented multiple (2)**: Brooklyn, Mazur.
-- **Not mentioned (6)**: Holywell, Celko, PostgreSQL, PG.ai, GitLab, Supabase.
 
 ## LAY-06 Terminate the line after an open parenthesis
 
@@ -248,12 +206,6 @@ SELECT
     *
 FROM active_drivers
 ```
-
-### Source breakdown
-
-- **For (3)**: Holywell, PG.ai, Mozilla.
-- **Against (0)**
-- **Not mentioned (6)**: Celko, PostgreSQL, Brooklyn, GitLab, Mazur, Supabase.
 
 ## LAY-07 Indent CTE bodies one level inside their parentheses
 
@@ -310,13 +262,6 @@ INNER JOIN recent_orders
     ON active_customers.id = recent_orders.customer_id
 ```
 
-### Source breakdown
-
-- **For (2)**: PostgreSQL, Brooklyn.
-- **Against (0)**
-- **Not mentioned (7)**: Holywell, Celko, PG.ai, Mozilla, GitLab, Mazur,
-  Supabase.
-
 ## LAY-08 Use one space between all language tokens
 
 Always use exactly one space between language tokens: before and after operators
@@ -353,12 +298,6 @@ WHERE
     salary > 30000
     AND is_active IS true
 ```
-
-### Source breakdown
-
-- **For (3)**: Holywell, Celko, PostgreSQL.
-- **Against (0)**
-- **Not mentioned (6)**: PG.ai, Mozilla, Brooklyn, GitLab, Mazur, Supabase.
 
 ## LAY-09 Align `AS` keywords in a `SELECT` list
 
@@ -471,12 +410,6 @@ WHERE
     currency IN ('EUR', 'USD')
 ```
 
-### Source breakdown
-
-- **For (3)**: Brooklyn, Mazur, PostgreSQL.
-- **Against (0)**
-- **Not mentioned (6)**: Holywell, Celko, PG.ai, Mozilla, GitLab, Supabase.
-
 ## LAY-12 Put `AND` / `OR` at the beginning of the next line
 
 In a `WHERE`, `HAVING`, or `ON` clause with multiple conditions, place `AND` and
@@ -514,12 +447,6 @@ WHERE
     AND city IS NOT NULL
 ```
 
-### Source breakdown
-
-- **For (3)**: PG.ai, Mozilla, Brooklyn.
-- **Against (2)**: Celko, Mazur.
-- **Not mentioned (4)**: Holywell, PostgreSQL, GitLab, Supabase.
-
 ## LAY-13 Add new lines after semicolons and keyword definitions
 
 Leave a blank line after each semicolon to separate queries. Also leave a new
@@ -545,13 +472,6 @@ SELECT
     count(*) AS total
 FROM courses;
 ```
-
-### Source breakdown
-
-- **For (2)**: Holywell, Celko.
-- **Against (0)**
-- **Not mentioned (7)**: PostgreSQL, PG.ai, Mozilla, Brooklyn, GitLab, Mazur,
-  Supabase.
 
 ## LAY-14 Use blank lines between logically distinct sections
 
@@ -602,12 +522,6 @@ INNER JOIN enrolments
 GROUP BY active_students.full_name
 ```
 
-### Source breakdown
-
-- **For (4)**: Holywell, Celko, Brooklyn, Mazur.
-- **Against (0)**
-- **Not mentioned (5)**: PostgreSQL, PG.ai, Mozilla, GitLab, Supabase.
-
 ## LAY-15 Use trailing commas
 
 In lists of arguments (columns in `SELECT`, values in `IN`, ...) place commas at
@@ -638,12 +552,6 @@ SELECT
     status
 FROM tickets
 ```
-
-### Source breakdown
-
-- **For trailing commas (4)**: Celko, Mozilla, PG.ai, Mazur.
-- **For leading commas (1)**: Brooklyn.
-- **Not mentioned (4)**: Holywell, PostgreSQL, GitLab, Supabase.
 
 ## LAY-16 Keep lines under 120 characters
 
@@ -694,13 +602,6 @@ INNER JOIN assessments
     ON students.id = assessments.student_id
 ```
 
-### Source breakdown
-
-- **For (2)**: Brooklyn, GitLab.
-- **Against (0)**
-- **Not mentioned (7)**: Holywell, Celko, PostgreSQL, PG.ai, Mozilla, Mazur,
-  Supabase.
-
 ## LAY-17 Break long `IN` lists into multiple indented lines
 
 When an `IN` list contains many values, place each value on its own indented
@@ -738,13 +639,6 @@ WHERE
     )
 ```
 
-### Source breakdown
-
-- **For (2)**: Brooklyn, Mazur.
-- **Against (0)**
-- **Not mentioned (7)**: Holywell, Celko, PostgreSQL, PG.ai, Mozilla, GitLab,
-  Supabase.
-
 ## LAY-18 Use a multi line `CASE` structure
 
 For `CASE` expressions that span multiple lines, indent each `WHEN` one level
@@ -778,13 +672,6 @@ SELECT
 FROM requests
 ```
 
-### Source breakdown
-
-- **For (2)**: Brooklyn, Mazur.
-- **Against (0)**
-- **Not mentioned (7)**: Holywell, Celko, PostgreSQL, PG.ai, Mozilla, GitLab,
-  Supabase.
-
 ## LAY-19 A single short `WHEN`/`THEN` can stay on one line
 
 When a `CASE` has only one `WHEN` branch and the `THEN` value is short, the
@@ -809,13 +696,6 @@ SELECT
     CASE WHEN is_cached IS true THEN 'Cached' END AS cache_label
 FROM requests
 ```
-
-### Source breakdown
-
-- **For (1)**: Brooklyn.
-- **Against (0)**
-- **Not mentioned (8)**: Holywell, Celko, PostgreSQL, PG.ai, Mozilla, GitLab,
-  Mazur, Supabase.
 
 ## LAY-20 `CASE` inside a function call
 
@@ -845,13 +725,6 @@ SELECT
     ) AS failed_payments
 FROM payments
 ```
-
-### Source breakdown
-
-- **For (1)**: Brooklyn.
-- **Against (0)**
-- **Not mentioned (8)**: Holywell, Celko, PostgreSQL, PG.ai, Mozilla, GitLab,
-  Mazur, Supabase.
 
 ## LAY-21 Keep window functions on one line when they fit. Expand sub-clauses when they don't
 
@@ -905,10 +778,3 @@ SELECT
     ) AS rolling_average_price
 FROM stock_prices
 ```
-
-### Source breakdown
-
-- **For (2)**: Brooklyn, Mazur.
-- **Against (0)**
-- **Not mentioned (7)**: Holywell, Celko, PostgreSQL, PG.ai, Mozilla, GitLab,
-  Supabase.

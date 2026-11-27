@@ -2,10 +2,49 @@
 
 [![Lint](https://github.com/diagmatrix/sql-style-guide/actions/workflows/lint.yml/badge.svg)](https://github.com/diagmatrix/sql-style-guide/actions/workflows/lint.yml)
 
-This is my SQL style guide for development.
+This is my SQL style guide for development. These guidelines are meant to
+inform, not dictate. Every project comes with its own constraints: efficiency
+concerns, business rules, specific contexts... There will be times when
+following a rule to the letter does more harm than good.
 
-The rules live in [`guide/`](guide/README.md), one file per topic, each with an
-explanation and Bad/Good examples.
+## Rules
+
+The rules live in [`guide/`](guide/), one file per group, each with an
+explanation and Bad/Good examples. Every rule has a stable code made of its
+group prefix and a number (for example `LAY-03`).
+
+1. [Layout](guide/layout.md) (`LAY`)
+2. [Keywords and functions](guide/keywords.md) (`KWD`)
+3. [Naming](guide/naming.md) (`NAM`)
+4. [Aliasing and references](guide/aliasing.md) (`ALI`)
+5. [Comments](guide/comments.md) (`CMT`)
+6. [Data types and literals](guide/data-types.md) (`TYP`)
+7. [Expressions and conditions](guide/expressions.md) (`EXP`)
+8. [Query structure](guide/structure.md) (`STR`)
+9. [Clauses](guide/clauses.md) (`CLS`)
+10. [Schema objects](guide/schema.md) (`DDL`)
+
+## Acknowledgements
+
+This guide is an adaptation of
+[Aircury's SQL style guide](https://github.com/aircury/sql-style-guide), which I
+also created. Most of its rules come from other SQL style guides, where a
+decision has been made with some reasoning and no other guide contradicts it.
+Others come mostly from my opinion or are not a consensus between the guides.
+The guides it compares against are:
+
+- *Joe Celko's SQL Programming Style* (Joe Celko, 2005)
+- [Simon Holywell's SQL Style Guide](https://www.sqlstyle.guide/)
+- The [PostgreSQL documentation](https://www.postgresql.org/docs/current/sql.html)
+- [Postgres.ai's rules](https://postgres.ai/rules/rules-pages)
+- [Mozilla's SQL Style Guide](https://docs.telemetry.mozilla.org/concepts/sql_style)
+- [Brooklyn Data Co.'s SQL Style Guide](https://github.com/brooklyn-data/co/blob/main/sql_style_guide.md)
+- [GitLab's SQL Style Guide](https://handbook.gitlab.com/handbook/enterprise-data/platform/sql-style-guide/)
+- [Matt Mazur's SQL Style Guide](https://github.com/mattm/sql-style-guide)
+- [Supabase's Postgres SQL Style Guide](https://supabase.com/docs/guides/getting-started/ai-prompts/code-format-sql)
+
+To learn more about these sources and where each one stands on every rule,
+head to [Aircury's SQL style guide](https://github.com/aircury/sql-style-guide).
 
 ## Examples
 

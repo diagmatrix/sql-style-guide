@@ -30,13 +30,6 @@ LEFT JOIN archived_transactions AS transactions
 GROUP BY customers.full_name
 ```
 
-### Source breakdown
-
-- **For (9)**: Holywell, Celko, Supabase, Brooklyn, GitLab, Mozilla, Mazur,
-  PG.ai, PostgreSQL.
-- **Against (0)**
-- **Not mentioned (0)**
-
 ## ALI-02 Always use aliasing for aggregated and other column expression
 
 Always use an alias name for columns that are the result of aggregation, `CASE`
@@ -67,12 +60,6 @@ SELECT
 FROM matches
 GROUP BY team_name
 ```
-
-### Source breakdown
-
-- **For (4)**: Holywell, Celko, Brooklyn, Mazur.
-- **Against (0)**
-- **Not mentioned (5)**: GitLab, Mozilla, Supabase, PG.ai, PostgreSQL.
 
 ## ALI-03 Aim for clarity in table aliasing
 
@@ -114,12 +101,6 @@ INNER JOIN school_district_areas AS districts
     ON schools.district_code = districts.code
 ```
 
-### Source breakdown
-
-- **For (3)**: Brooklyn, Mazur, GitLab.
-- **Against (2)**: Holywell, PostgreSQL.
-- **Not mentioned (4)**: Celko, Mozilla, Supabase, PG.ai.
-
 ## ALI-04 Column aliases should semantically relate to what they represent
 
 Aliases should relate in some way to the object or expression they are aliasing.
@@ -150,12 +131,6 @@ SELECT
 FROM matches
 GROUP BY team_name
 ```
-
-### Source breakdown
-
-- **For (7)**: Brooklyn, Mazur, GitLab, Supabase, Celko, Holywell, PG.ai.
-- **Against (0)**
-- **Not mentioned (2)**: Mozilla, PostgreSQL.
 
 ## ALI-05 Always qualify column references in queries with `JOIN`
 
@@ -191,12 +166,6 @@ INNER JOIN bookings
     ON guests.id = bookings.guest_id
 ```
 
-### Source breakdown
-
-- **For (4)**: Brooklyn, Mazur, GitLab, Holywell.
-- **Against (0)**
-- **Not mentioned (5)**: Mozilla, PostgreSQL, Supabase, Celko, PG.ai.
-
 ## ALI-06 Omit table references for single-table queries
 
 In single-table queries, omit the table prefix from column references as they do
@@ -225,10 +194,3 @@ FROM schools
 WHERE
     cohort > 2024
 ```
-
-### Source breakdown
-
-- **For (2)**: Brooklyn, Mazur.
-- **Against (0)**
-- **Not mentioned (7)**: Mozilla, PostgreSQL, Supabase, Celko, PG.ai, GitLab,
-  Holywell.

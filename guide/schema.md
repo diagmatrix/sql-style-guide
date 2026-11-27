@@ -29,13 +29,6 @@ CREATE TABLE enrolments (
 );
 ```
 
-### Source breakdown
-
-- **For (2)**: Holywell, Celko.
-- **Against (0)**
-- **Not mentioned (7)**: PostgreSQL, PG.ai, Mozilla, Brooklyn, GitLab, Mazur,
-  Supabase.
-
 ## DDL-02 Give constraints explicit custom names
 
 Name constraints explicitly so that error messages and schema introspection are
@@ -69,13 +62,6 @@ CREATE TABLE products (
     CONSTRAINT chk_products_price_min CHECK (price > 0)
 );
 ```
-
-### Source breakdown
-
-- **For (2)**: Holywell, Celko.
-- **Against (0)**
-- **Not mentioned (7)**: PostgreSQL, PG.ai, Mozilla, Brooklyn, GitLab, Mazur,
-  Supabase.
 
 ## DDL-03 Place multi-column constraints near both columns; table-level constraints at the end
 
@@ -111,13 +97,6 @@ CREATE TABLE loans (
 );
 ```
 
-### Source breakdown
-
-- **For (2)**: Holywell, Celko.
-- **Against (0)**
-- **Not mentioned (7)**: PostgreSQL, PG.ai, Mozilla, Brooklyn, GitLab, Mazur,
-  Supabase.
-
 ## DDL-04 Declare `PRIMARY KEY` first, immediately after the column list
 
 The `PRIMARY KEY` constraint should be the first constraint declared in a
@@ -149,13 +128,6 @@ CREATE TABLE projects (
     FOREIGN KEY (client_id) REFERENCES clients (id)
 );
 ```
-
-### Source breakdown
-
-- **For (2)**: Holywell, Celko.
-- **Against (0)**
-- **Not mentioned (7)**: PostgreSQL, PG.ai, Mozilla, Brooklyn, GitLab, Mazur,
-  Supabase.
 
 ## DDL-05 Keep each constraint single-focused
 
@@ -196,13 +168,6 @@ CREATE TABLE discounts (
 );
 ```
 
-### Source breakdown
-
-- **For (2)**: Holywell, Celko.
-- **Against (0)**
-- **Not mentioned (7)**: PostgreSQL, PG.ai, Mozilla, Brooklyn, GitLab, Mazur,
-  Supabase.
-
 ## DDL-06 Use `LIKE` and `SIMILAR TO` for string format validation in constraints
 
 When constraining the format of a text column, use `LIKE` for simple pattern
@@ -237,13 +202,6 @@ CREATE TABLE suppliers (
 );
 ```
 
-### Source breakdown
-
-- **For (2)**: Holywell, Celko.
-- **Against (0)**
-- **Not mentioned (7)**: PostgreSQL, PG.ai, Mozilla, Brooklyn, GitLab, Mazur,
-  Supabase.
-
 ## DDL-07 Always explicitly name the columns a view exposes
 
 Never rely on `SELECT *` in a view definition. Always list the columns the view
@@ -276,13 +234,6 @@ FROM employees
 WHERE
     is_active IS true
 ```
-
-### Source breakdown
-
-- **For (1)**: Celko.
-- **Against (0)**
-- **Not mentioned (8)**: Holywell, PostgreSQL, PG.ai, Mozilla, Brooklyn, GitLab,
-  Mazur, Supabase.
 
 ## DDL-08 Avoid view proliferation
 
@@ -323,10 +274,3 @@ INNER JOIN schools
 WHERE
     students.is_active IS true
 ```
-
-### Source breakdown
-
-- **For (1)**: Celko.
-- **Against (0)**
-- **Not mentioned (8)**: Holywell, PostgreSQL, PG.ai, Mozilla, Brooklyn, GitLab,
-  Mazur, Supabase.

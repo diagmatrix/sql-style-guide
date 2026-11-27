@@ -35,13 +35,6 @@ WHERE
     AND status IN ('shipped', 'pending', 'returned')
 ```
 
-### Source breakdown
-
-- **For (1)**: Holywell.
-- **Against (0)**
-- **Not mentioned (8)**: Celko, PostgreSQL, PG.ai, Mozilla, Brooklyn, GitLab,
-  Mazur, Supabase.
-
 ## EXP-02 Use `CASE` for conditional logic
 
 Use `CASE` expressions for inline conditional logic. When the same expression is
@@ -79,12 +72,6 @@ SELECT
 FROM assessments
 ```
 
-### Source breakdown
-
-- **For (3)**: Holywell, Celko, GitLab.
-- **Against (0)**
-- **Not mentioned (6)**: PostgreSQL, PG.ai, Mozilla, Brooklyn, Mazur, Supabase.
-
 ## EXP-03 Be explicit in boolean conditions
 
 Write boolean comparisons using `IS true` and `IS false` rather than relying on
@@ -120,13 +107,6 @@ WHERE
     AND is_premium IS false
 ```
 
-### Source breakdown
-
-- **For (1)**: Mazur.
-- **Against (0)**
-- **Not mentioned (8)**: Holywell, Celko, PostgreSQL, PG.ai, Mozilla, Brooklyn,
-  GitLab, Supabase.
-
 ## EXP-04 Use `!=` instead of `<>`
 
 Prefer `!=` over `<>` for the not-equal operator. Both are valid SQL, but `!=`
@@ -156,12 +136,6 @@ WHERE
     country_code != 'ES'
     AND status != 'cancelled'
 ```
-
-### Source breakdown
-
-- **For (3)**: Brooklyn, GitLab, Mazur.
-- **Against (0)**
-- **Not mentioned (6)**: Holywell, Celko, PostgreSQL, PG.ai, Mozilla, Supabase.
 
 ## EXP-05 Avoid redundant parentheses
 
@@ -198,10 +172,3 @@ WHERE
     AND price > 20
     AND category_id IN (3, 7)
 ```
-
-### Source breakdown
-
-- **For (1)**: Celko.
-- **Against (0)**
-- **Not mentioned (8)**: Holywell, PostgreSQL, PG.ai, Mozilla, Brooklyn, GitLab,
-  Mazur, Supabase.

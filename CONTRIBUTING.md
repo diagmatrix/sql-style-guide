@@ -20,7 +20,7 @@ are exempt; SQL examples follow the guide's own 120-character limit.
 
 - Each rule is a `##` heading in its group's file under [`guide/`](guide/),
   starting with its code (for example `## LAY-03 ...`), followed by its
-  explanation, a `### Example` and, when known, a `### Source breakdown`.
+  explanation and a `### Example`.
 - A new rule takes the next free number in its group. Codes are never reused:
   when a rule is removed, its code is retired.
 - Keep the rule checklist in [`guide/SKILL.md`](guide/SKILL.md) in sync with

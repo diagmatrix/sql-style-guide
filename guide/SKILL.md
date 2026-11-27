@@ -6,12 +6,10 @@ description: Write, review and reformat SQL following diagmatrix's SQL style gui
 # SQL style guide
 
 This skill applies a specific SQL style guide. The full guide lives next to this
-file, one file per topic (index in `README.md`), each rule with an explanation
-and Bad/Good examples. The checklist below condenses every rule so you can
-usually work from it alone; open the topic file when a rule's exact scope or an
-edge case matters. Ignore the *Source breakdown* section under each rule: it
-records which external guides support the rule and doesn't change how the rule
-is applied.
+file, one file per topic (listed in the checklist below), each rule with an
+explanation and Bad/Good examples. The checklist below condenses every rule so
+you can usually work from it alone; open the topic file when a rule's exact
+scope or an edge case matters.
 
 The guide describes itself as meant "to inform, not dictate": when following a
 rule would clearly make the SQL worse (efficiency, business constraints, a
